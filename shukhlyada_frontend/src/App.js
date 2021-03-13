@@ -1,11 +1,12 @@
-import './App.css';
+import "./App.css";
+import Post from "./Components/Post";
 
 function App() {
-  return (
-    <div className="App">
-        <h1>Hello world!</h1>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Post></Post>
+		</div>
+	);
 }
 
 export default App;
