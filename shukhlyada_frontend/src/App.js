@@ -1,11 +1,12 @@
 import "./App.css";
-import Post from "./Components/Post";
+
 import Header from "./Components/Header";
+import MainPage from "./Pages/MainPage";
 function App() {
 	return (
 		<div className="App">
 			<Header></Header>
-			<Post></Post>
+			<MainPage></MainPage>
 		</div>
 	);
 }
