@@ -10,14 +10,14 @@ import ChatIcon from "@material-ui/icons/Chat";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
+		margin: "10px",
 		padding: "2px 4px",
 		display: "flex",
-		alignItems: "center",
-		width: 400,
 	},
 	input: {
+		width: 400,
 		marginLeft: theme.spacing(1),
-		flex: 1,
+		marginTop: "6px",
 	},
 	iconButton: {
 		padding: 10,
@@ -26,6 +26,16 @@ const useStyles = makeStyles((theme) => ({
 		height: 2,
 		margin: 10,
 	},
+	chatIcon: {
+		margin: "12px",
+		width: "24px",
+		height: "24px",
+	},
+	inputForm: {
+		width: 525,
+
+		margin: "auto",
+	},
 }));
 
 export default function CreatePostInput() {
@@ -33,12 +43,11 @@ export default function CreatePostInput() {
 
 	return (
 		<div id="container">
-			<div id="searchBar">
-				<ChatIcon></ChatIcon>
-				<Paper component="form" className={classes.root}>
+			<div id="searchBar" className={classes.root}>
+				<Paper component="form" className={classes.inputForm}>
 					<InputBase
 						className={classes.input}
-						placeholder="Search..."
+						placeholder="New..."
 						inputProps={{ "aria-label": "search google maps" }}
 					/>
 					<IconButton
@@ -57,8 +66,6 @@ export default function CreatePostInput() {
 					</IconButton>
 				</Paper>
 			</div>
-
-			<Divider variant="middle" className={classes.divider} />
 		</div>
 	);
 }
