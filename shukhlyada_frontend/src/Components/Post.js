@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: 345,
 		margin: "10px",
+		float: "left",
 	},
 	media: {
 		height: 0,

@@ -1,10 +1,10 @@
 import "./App.css";
-import Post from "./Components/Post";
+import ErrorPage from "./Components/Error";
 
 function App() {
 	return (
 		<div className="App">
-			<Post></Post>
+			<ErrorPage></ErrorPage>
 		</div>
 	);
 }
