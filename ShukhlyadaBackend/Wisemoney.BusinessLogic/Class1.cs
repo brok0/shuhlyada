@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wisemoney.BusinessLogic
+namespace Shukhlyada.BusinessLogic
 {
     public class Class1
     {
