@@ -24,22 +24,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var requestURL =
-	"C:/Users/Xiaomi/Desktop/shuhlyada/shukhlyada proj/shukhlyada_frontend/src/testImagesPath.json";
-
 export default function MainPage() {
 	const classes = useStyles();
 	const [Data, setData] = useState([]);
 
-	useEffect(() => {
-		fetch(requestURL, { credentials: "same-origin" })
-			.then((res) => {
-				setData(res.json());
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	});
+	useEffect(() => {});
 
 	return (
 		<div id="wrapper">

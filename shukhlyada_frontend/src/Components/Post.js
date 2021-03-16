@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "row",
 		maxWidth: "75%",
-
 		margin: "auto",
 	},
 	media: {
