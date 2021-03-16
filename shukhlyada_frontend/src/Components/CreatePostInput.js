@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 	},
 	input: {
-		width: 400,
+		width: "65%",
 		marginLeft: theme.spacing(1),
 		marginTop: "6px",
 	},
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "24px",
 	},
 	inputForm: {
-		width: 525,
+		width: "50%",
 
 		margin: "auto",
 	},

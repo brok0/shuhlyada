@@ -28,7 +28,7 @@ export default function ErrorPage(props) {
 		<div className={classes.errorText}>
 			<h1>
 				<WarningIcon className={classes.icon}></WarningIcon>
-				<font color={"#7054e3"}>Що за дідько. Вилізла помилка</font>
+				<font color={"#7054e3"}>От халепа. Щось не так</font>
 			</h1>
 			<h4>
 				<font color={"#b2292b"}>Код помилки:{props.errorCode}</font>

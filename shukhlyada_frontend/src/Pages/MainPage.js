@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CreatePostInput from "../Components/CreatePostInput";
 import Post from "../Components/Post";
 import Divider from "@material-ui/core/Divider";
@@ -24,18 +24,33 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+var requestURL =
+	"C:/Users/Xiaomi/Desktop/shuhlyada/shukhlyada proj/shukhlyada_frontend/src/testImagesPath.json";
+
 export default function MainPage() {
 	const classes = useStyles();
+	const [Data, setData] = useState([]);
+
+	useEffect(() => {
+		fetch(requestURL, { credentials: "same-origin" })
+			.then((res) => {
+				setData(res.json());
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	});
+
 	return (
 		<div id="wrapper">
 			<div className={classes.contentBackground}>
 				<CreatePostInput></CreatePostInput>
 				<Divider variant="middle" className={classes.divider} />
-				<Post></Post>
+				<Post imagePath={"![img](https://picsum.photos/200/300)"}></Post>
 				<Divider variant="middle" className={classes.PostDivider} />
-				<Post></Post>
+				<Post imagePath={"![img](https://picsum.photos/1000/500)"}></Post>
 				<Divider variant="middle" className={classes.PostDivider} />
-				<Post></Post>
+				<Post imagePath={"![img](https://picsum.photos/500/1000)"}></Post>
 			</div>
 		</div>
 	);
