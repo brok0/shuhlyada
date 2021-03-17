@@ -13,6 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -77,6 +78,14 @@ const useStyles = makeStyles((theme) => ({
 			display: "none",
 		},
 	},
+	link: {
+		textDecoration: "none",
+		color: "white",
+		paddingBottom: "7px",
+		"&:hover": {
+			color: "white",
+		},
+	},
 }));
 
 export default function PrimarySearchAppBar() {
@@ -95,30 +104,11 @@ export default function PrimarySearchAppBar() {
 		setMobileMoreAnchorEl(null);
 	};
 
-	const handleMenuClose = () => {
-		setAnchorEl(null);
-		handleMobileMenuClose();
-	};
-
 	const handleMobileMenuOpen = (event) => {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
 	const menuId = "primary-search-account-menu";
-	const renderMenu = (
-		<Menu
-			anchorEl={anchorEl}
-			anchorOrigin={{ vertical: "top", horizontal: "right" }}
-			id={menuId}
-			keepMounted
-			transformOrigin={{ vertical: "top", horizontal: "right" }}
-			open={isMenuOpen}
-			onClose={handleMenuClose}
-		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-		</Menu>
-	);
 
 	const mobileMenuId = "primary-search-account-menu-mobile";
 	const renderMobileMenu = (
@@ -163,7 +153,9 @@ export default function PrimarySearchAppBar() {
 						color="inherit"
 						aria-label="open drawer"
 					>
-						<AllInboxIcon />
+						<Link to="/" className={classes.link}>
+							<AllInboxIcon />
+						</Link>
 					</IconButton>
 					<Typography className={classes.title} variant="h6" noWrap>
 						Шухляда
@@ -193,10 +185,11 @@ export default function PrimarySearchAppBar() {
 							aria-label="account of current user"
 							aria-controls={menuId}
 							aria-haspopup="true"
-							onClick={handleProfileMenuOpen}
 							color="inherit"
 						>
-							<AccountCircle />
+							<Link to="/login" className={classes.link}>
+								<AccountCircle />
+							</Link>
 						</IconButton>
 					</div>
 					<div className={classes.sectionMobile}>
@@ -213,7 +206,6 @@ export default function PrimarySearchAppBar() {
 				</Toolbar>
 			</AppBar>
 			{renderMobileMenu}
-			{renderMenu}
 		</div>
 	);
 }
