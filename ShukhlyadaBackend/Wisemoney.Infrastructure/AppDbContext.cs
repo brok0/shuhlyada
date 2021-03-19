@@ -41,6 +41,9 @@ namespace Shukhlyada.Infrastructure
 
                 a.Property(a => a.RegisterDate)
                 .HasDefaultValueSql("getdate()");
+
+                a.Property(a => a.Salt)
+                .IsRequired();
             });
 
 
