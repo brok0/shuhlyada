@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Wisemoney.BusinessLogic\Shukhlyada.BusinessLogic.csproj" />
     <ProjectReference Include="..\Wisemoney.Infrastructure\Shukhlyada.Infrastructure.csproj" />
   </ItemGroup>
 

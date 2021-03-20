@@ -8,7 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Shukhlyada.BusinessLogic.Abstractions;
+using Shukhlyada.BusinessLogic.Services;
 using Shukhlyada.Infrastructure;
+using Shukhlyada.Infrastructure.Abstractions;
+using Shukhlyada.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +36,15 @@ namespace Shukhlyada.Api
             services.AddControllers();
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShukhlyadaDB")));
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFeedService, FeedService>();
+            services.AddScoped<IChannelService, ChannelService>();
+
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IChannelRepository, ChannelRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
 
             services.AddSwaggerGen(c =>
             {
