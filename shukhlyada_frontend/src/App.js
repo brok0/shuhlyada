@@ -4,13 +4,14 @@ import Header from "./Components/Header";
 import MainPage from "./Pages/MainPage";
 import LoginForm from "./Pages/Authentication/Login";
 import RegisterForm from "./Pages/Authentication/Register";
+import ProfilePage from "./Pages/ProfilePage";
 
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
 	REGISTER: "/register",
 	HOME: "/home",
-	USERPAGE: "/userpage",
+	PROFILE: "/profile",
 	CHANNEL: "/channel",
 	ERROR: "/error",
 };
@@ -35,6 +36,12 @@ function App() {
 						path={Routes.REGISTER}
 						render={() => <RegisterForm></RegisterForm>}
 					></Route>
+					<Route
+						exact
+						path={Routes.PROFILE}
+						render={() => <ProfilePage></ProfilePage>}
+					></Route>
+
 				</Switch>
 			</BrowserRouter>
 		</div>
