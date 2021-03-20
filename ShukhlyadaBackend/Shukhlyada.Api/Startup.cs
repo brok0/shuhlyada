@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Shukhlyada.Api.Middlewares;
 using Shukhlyada.BusinessLogic.Abstractions;
 using Shukhlyada.BusinessLogic.Services;
 using Shukhlyada.Infrastructure;
@@ -64,7 +65,16 @@ namespace Shukhlyada.Api
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             app.UseRouting();
+
+            app.UseCors(c =>
+            {
+                c.AllowAnyOrigin();
+                c.AllowAnyMethod();
+                c.AllowAnyHeader();
+            });
 
             app.UseAuthorization();
 
