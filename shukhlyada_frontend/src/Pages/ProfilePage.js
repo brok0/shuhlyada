@@ -24,17 +24,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "lightGray",
     textAlign: "center",
   },
-  ProfileGrid: {
+  profileGrid: {
     marginTop: "10px",
+    height: "35%",
   },
-  Button: {
-    marginTop: "5px",
+  button: {
+    marginTop: "30px",
     marginLeft: "5px",
     marginRight: "5px",
     marginBottom: "5px",
   },
   divider: {
     margin: "10px",
+  },
+  avatar: {
+    marginTop: "10px",
+  },
+  usernameGrid: {
+    marginLeft: "10px",
   },
 }));
 
@@ -62,19 +69,24 @@ export default function ProfilePage() {
           <Divider variant="middle" className={classes.divider} />
           <Post></Post>
         </Grid>
-        <Grid className={classes.ProfileGrid} item xs={2} sm={3}>
-          <Card>
+        <Grid className={classes.profileGrid} item xs={2} sm={3}>
+          <Card variant="outlined">
             <Grid
               direction="row"
-              justify="space-evenly"
+              justify="stretch"
               alignItems="center"
               container
+              xs="12"
+              xl="12"
             >
               <Grid
+                className={classes.usernameGrid}
                 direction="column"
                 justify="space-between"
                 alignItems="flex-start"
-                container xs
+                container
+                xs="7"
+                xl="8"
               >
                 <Typography variant="h5" gutterBottom>
                   UserName
@@ -84,15 +96,22 @@ export default function ProfilePage() {
                 </Typography>
                 <Button color="primary">Edit</Button>
               </Grid>
+
               <Grid
                 direction="column"
-                justify="space-around"
-                alignItems="flex-end"
+                spacing="10"
+                alignItems="center"
                 container
                 xs
               >
-                <Avatar alt={"Remy Sharp"} image={"AccountCircleIcon"} />
-                <Button color="secondary">Logout</Button>
+                <Avatar
+                  className={classes.avatar}
+                  image={"AccountCircleIcon"}
+                />
+
+                <Button className={classes.button} color="secondary">
+                  Logout
+                </Button>
               </Grid>
             </Grid>
           </Card>
