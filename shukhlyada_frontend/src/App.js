@@ -4,7 +4,8 @@ import Header from "./Components/Header";
 import MainPage from "./Pages/MainPage";
 import LoginForm from "./Pages/Authentication/Login";
 import RegisterForm from "./Pages/Authentication/Register";
-
+import ForgotPassword from "./Pages/Authentication/ForgotPassword";
+import ResetPassword from "./Pages/Authentication/ResetPassword";
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
@@ -13,6 +14,8 @@ const Routes = {
 	USERPAGE: "/userpage",
 	CHANNEL: "/channel",
 	ERROR: "/error",
+	FORGOTPASS:"/forgotpassword",
+	RESETPASS :"/resetpassword"
 };
 function App() {
 	return (
@@ -34,6 +37,14 @@ function App() {
 					<Route
 						path={Routes.REGISTER}
 						render={() => <RegisterForm></RegisterForm>}
+					></Route>
+					<Route
+						path={Routes.FORGOTPASS}
+						render={() => <ForgotPassword></ForgotPassword>}
+					></Route>
+					<Route
+						path={Routes.RESETPASS}
+						render={() => <ResetPassword></ResetPassword>}
 					></Route>
 				</Switch>
 			</BrowserRouter>

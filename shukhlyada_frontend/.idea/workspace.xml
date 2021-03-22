@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="babeb698-32a7-4b78-9f7a-9a14e3d73c1b" name="Default Changelist" comment="instal materialui">
+      <change afterPath="$PROJECT_DIR$/src/Pages/Authentication/ForgotPassword.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Authentication/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Authentication/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Authentication/ResetPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Authentication/ResetPassword.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +50,7 @@
       <updated>1615038627210</updated>
       <workItem from="1615038628900" duration="2673000" />
       <workItem from="1615656512120" duration="10355000" />
+      <workItem from="1616408337003" duration="6317000" />
     </task>
     <task id="LOCAL-00001" summary="Basic set up">
       <created>1615039320241</created>
