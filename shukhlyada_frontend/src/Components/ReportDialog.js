@@ -44,7 +44,7 @@ export default function ReportDialog() {
 		<div>
 			<IconButton
 				variant="outlined"
-				color="primary"
+				color="secondary"
 				onClick={handleClickOpen}
 				aria-label="reportpost"
 			>
