@@ -4,18 +4,16 @@ import Header from "./Components/Header";
 import MainPage from "./Pages/MainPage";
 import LoginForm from "./Pages/Authentication/Login";
 import RegisterForm from "./Pages/Authentication/Register";
-import ForgotPassword from "./Pages/Authentication/ForgotPassword";
-import ResetPassword from "./Pages/Authentication/ResetPassword";
+import ProfilePage from "./Pages/ProfilePage";
+
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
 	REGISTER: "/register",
 	HOME: "/home",
-	USERPAGE: "/userpage",
+	PROFILE: "/profile",
 	CHANNEL: "/channel",
 	ERROR: "/error",
-	FORGOTPASS:"/forgotpassword",
-	RESETPASS :"/resetpassword"
 };
 function App() {
 	return (
@@ -39,13 +37,11 @@ function App() {
 						render={() => <RegisterForm></RegisterForm>}
 					></Route>
 					<Route
-						path={Routes.FORGOTPASS}
-						render={() => <ForgotPassword></ForgotPassword>}
+						exact
+						path={Routes.PROFILE}
+						render={() => <ProfilePage></ProfilePage>}
 					></Route>
-					<Route
-						path={Routes.RESETPASS}
-						render={() => <ResetPassword></ResetPassword>}
-					></Route>
+
 				</Switch>
 			</BrowserRouter>
 		</div>
