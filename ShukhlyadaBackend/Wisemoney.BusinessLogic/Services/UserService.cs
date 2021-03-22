@@ -51,6 +51,7 @@ namespace Shukhlyada.BusinessLogic.Services
 
             acc.Password = acc.Password.SHA2Hash(salt);
             acc.Salt = salt;
+            acc.Type = AccountType.User;
 
             
             Account insertedAccount = _accountRepository.Insert(acc);

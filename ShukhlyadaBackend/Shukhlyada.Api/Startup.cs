@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,6 +42,8 @@ namespace Shukhlyada.Api
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShukhlyadaDB")));
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<IMailService, MailService>();
 
             services.AddScoped<IUserService, UserService>();
@@ -81,6 +84,7 @@ namespace Shukhlyada.Api
                 c.AllowAnyHeader();
             });
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

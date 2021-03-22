@@ -25,7 +25,6 @@ namespace Shukhlyada.Infrastructure
                 .IsRequired();
 
                 a.Property(a => a.Password)
-                .HasMaxLength(32)
                 .IsRequired();
 
                 a.Property(a => a.Email)
