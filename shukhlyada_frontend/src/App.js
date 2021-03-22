@@ -5,7 +5,8 @@ import MainPage from "./Pages/MainPage";
 import LoginForm from "./Pages/Authentication/Login";
 import RegisterForm from "./Pages/Authentication/Register";
 import ProfilePage from "./Pages/ProfilePage";
-
+import ForgotPassword from "./Pages/Authentication/ForgotPassword";
+import ResetPassword from "./Pages/Authentication/ResetPassword";
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
@@ -14,6 +15,8 @@ const Routes = {
 	PROFILE: "/profile",
 	CHANNEL: "/channel",
 	ERROR: "/error",
+	FORGOT: "/forgotpassword",
+	RESET: "/resetpassword",
 };
 function App() {
 	return (
@@ -37,11 +40,17 @@ function App() {
 						render={() => <RegisterForm></RegisterForm>}
 					></Route>
 					<Route
-						exact
 						path={Routes.PROFILE}
 						render={() => <ProfilePage></ProfilePage>}
 					></Route>
-
+					<Route
+						path={Routes.FORGOT}
+						render={() => <ForgotPassword></ForgotPassword>}
+					></Route>
+					<Route
+						path={Routes.RESET}
+						render={() => <ResetPassword></ResetPassword>}
+					></Route>
 				</Switch>
 			</BrowserRouter>
 		</div>
