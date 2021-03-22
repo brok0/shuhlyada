@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Shukhlyada.Api.Middlewares;
 using Shukhlyada.BusinessLogic.Abstractions;
 using Shukhlyada.BusinessLogic.Services;
+using Shukhlyada.Domain.Models;
 using Shukhlyada.Infrastructure;
 using Shukhlyada.Infrastructure.Abstractions;
 using Shukhlyada.Infrastructure.Repositories;
@@ -36,7 +37,11 @@ namespace Shukhlyada.Api
 
             services.AddControllers();
 
+            services.Configure<ElasticEmailCredentials>(Configuration.GetSection("ElasticEmailCredentials"));
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShukhlyadaDB")));
+
+            services.AddScoped<IMailService, MailService>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFeedService, FeedService>();
