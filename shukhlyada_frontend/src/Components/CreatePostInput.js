@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import ImageIcon from "@material-ui/icons/Image";
 import ChatIcon from "@material-ui/icons/Chat";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -50,6 +51,7 @@ export default function CreatePostInput() {
 						placeholder="New..."
 						inputProps={{ "aria-label": "search google maps" }}
 					/>
+					<Tooltip title="Pin picture" placement="bottom" >
 					<IconButton
 						type="submit"
 						className={classes.iconButton}
@@ -57,6 +59,8 @@ export default function CreatePostInput() {
 					>
 						<ImageIcon></ImageIcon>
 					</IconButton>
+					</Tooltip>
+					<Tooltip title="Send" placement="bottom" >
 					<IconButton
 						type="submit"
 						className={classes.iconButton}
@@ -64,6 +68,7 @@ export default function CreatePostInput() {
 					>
 						<SendIcon />
 					</IconButton>
+					</Tooltip>
 				</Paper>
 			</div>
 		</div>
