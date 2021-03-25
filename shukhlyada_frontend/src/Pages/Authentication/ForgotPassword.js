@@ -35,16 +35,14 @@ const useStyles = makeStyles((theme) => ({
 export default function ForgotPassword() {
 	const classes = useStyles();
 
-	const redirectTime = "3500";
-	function timedRedirect() {
-		setTimeout('location.href = "/";', redirectTime);
-	}
-
 	const [state, setState] = useState({
 		open: false,
 		vertical: "top",
 		horizontal: "center",
 	});
+
+	const { vertical, horizontal, open } = state;
+
 	const handleClick = (newState) => () => {
 		setState({ open: true, ...newState });
 		timedRedirect();
@@ -53,7 +51,11 @@ export default function ForgotPassword() {
 	const handleClose = () => {
 		setState({ ...state, open: false });
 	};
-	const { vertical, horizontal, open } = state;
+
+	const redirectTime = "3500";
+	function timedRedirect() {
+		setTimeout('location.href = "/";', redirectTime);
+	}
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -72,6 +74,7 @@ export default function ForgotPassword() {
 						id="email"
 						label="Email Address"
 						name="email"
+						type="email"
 						autoComplete="email"
 						autoFocus
 					/>
@@ -94,7 +97,7 @@ export default function ForgotPassword() {
 						key={vertical + horizontal}
 					>
 						<Alert onClose={handleClose} severity="success">
-							Massage was sent on your email
+							Message was sent on your email.
 						</Alert>
 					</Snackbar>
 				</form>
