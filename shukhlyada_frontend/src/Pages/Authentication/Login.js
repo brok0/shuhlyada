@@ -56,7 +56,7 @@ export default function LoginForm() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (password && password.length < 6 && password.length > 32) {
+		if ((password && password.length < 6) || password.length > 32) {
 			setError("Password must be more than 6 characters and less than 32");
 			setVisible(100);
 		} else {

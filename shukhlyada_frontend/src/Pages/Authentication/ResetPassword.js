@@ -43,24 +43,10 @@ export default function ForgotPassword() {
 	const [errors, setError] = useState("");
 	const [visible, setVisible] = useState(0);
 
-	const handleSubmit = (e, newState) => {
-		e.preventDefault();
-		if (password && password.length < 6 && password.length > 32) {
-			setError("Password must be more than 6 characters and less than 32");
-			setVisible(100);
-		} else if (password && password != passwordConf) {
-			setError("Your password is not matching");
-			setVisible(100);
-		} else {
-			setVisible(0);
-		}
-		setState({ open: true, ...newState });
-	};
-
 	const [state, setState] = useState({
 		open: false,
 		vertical: "top",
-		horizontal: "center",
+		horizontal: "right",
 	});
 
 	const handleClose = () => {
@@ -68,6 +54,23 @@ export default function ForgotPassword() {
 	};
 	const { vertical, horizontal, open } = state;
 
+	const handleSubmit = (e, newState) => {
+		e.preventDefault();
+		console.log(password);
+		if (
+			(password && password.length < 6) ||
+			(password && password.length > 32)
+		) {
+			setError("Password must be more than 6 characters and less than 32");
+			setVisible(100);
+		} else if (password && password != passwordConf) {
+			setError("Your password is not matching");
+			setVisible(100);
+		} else {
+			setVisible(0);
+			setState({ open: true, ...newState });
+		}
+	};
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -86,7 +89,6 @@ export default function ForgotPassword() {
 						label="New Password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
@@ -100,18 +102,22 @@ export default function ForgotPassword() {
 						label="Confirm Password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
 						onChange={(e) => {
 							setConf(e.target.value);
 						}}
 					/>
 					<MuiAlert severity="error" style={{ opacity: `${visible}%` }}>
 						{errors}
+						{
+							//alert under text fields//
+						}
 					</MuiAlert>
+
 					<Button
 						fullWidth
 						variant="contained"
 						color="primary"
+						type="submit"
 						className={classes.submit}
 					>
 						Submit
@@ -124,7 +130,10 @@ export default function ForgotPassword() {
 						onClose={handleClose}
 						key={vertical + horizontal}
 					>
-						{errors ? (
+						{
+							//pop up alert in the topright//
+						}
+						{errors == "" ? (
 							<Alert onClose={handleClose} severity="error">
 								{errors}
 							</Alert>
