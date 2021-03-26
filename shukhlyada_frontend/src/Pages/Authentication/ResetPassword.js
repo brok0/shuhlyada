@@ -5,7 +5,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
@@ -39,22 +38,39 @@ export default function ForgotPassword() {
 	function timedRedirect() {
 		setTimeout('location.href = "/login";', redirectTime);
 	}
+	const [password, setPassword] = useState("");
+	const [passwordConf, setConf] = useState("");
+	const [errors, setError] = useState("");
+	const [visible, setVisible] = useState(0);
 
 	const [state, setState] = useState({
 		open: false,
 		vertical: "top",
-		horizontal: "center",
+		horizontal: "right",
 	});
-	const handleClick = (newState) => () => {
-		setState({ open: true, ...newState });
-		timedRedirect();
-	};
 
 	const handleClose = () => {
 		setState({ ...state, open: false });
 	};
 	const { vertical, horizontal, open } = state;
 
+	const handleSubmit = (e, newState) => {
+		e.preventDefault();
+		console.log(password);
+		if (
+			(password && password.length < 6) ||
+			(password && password.length > 32)
+		) {
+			setError("Password must be more than 6 characters and less than 32");
+			setVisible(100);
+		} else if (password && password != passwordConf) {
+			setError("Your password is not matching");
+			setVisible(100);
+		} else {
+			setVisible(0);
+			setState({ open: true, ...newState });
+		}
+	};
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -63,7 +79,7 @@ export default function ForgotPassword() {
 					Enter new password
 				</Typography>
 				<Typography variant="subtitle2" gutterBottom></Typography>
-				<form className={classes.form} noValidate>
+				<form className={classes.form} onSubmit={handleSubmit}>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -73,7 +89,9 @@ export default function ForgotPassword() {
 						label="New Password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
+						onChange={(e) => {
+							setPassword(e.target.value);
+						}}
 					/>
 					<TextField
 						variant="outlined"
@@ -84,13 +102,22 @@ export default function ForgotPassword() {
 						label="Confirm Password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
+						onChange={(e) => {
+							setConf(e.target.value);
+						}}
 					/>
+					<MuiAlert severity="error" style={{ opacity: `${visible}%` }}>
+						{errors}
+						{
+							//alert under text fields//
+						}
+					</MuiAlert>
+
 					<Button
-						onClick={handleClick({ vertical: "top", horizontal: "right" })}
 						fullWidth
 						variant="contained"
 						color="primary"
+						type="submit"
 						className={classes.submit}
 					>
 						Submit
@@ -101,12 +128,20 @@ export default function ForgotPassword() {
 						autoHideDuration={3000}
 						anchorOrigin={{ vertical, horizontal }}
 						onClose={handleClose}
-						// message="I love snacks"
 						key={vertical + horizontal}
 					>
-						<Alert onClose={handleClose} severity="success">
-							Password successfully changed
-						</Alert>
+						{
+							//pop up alert in the topright//
+						}
+						{errors == "" ? (
+							<Alert onClose={handleClose} severity="error">
+								{errors}
+							</Alert>
+						) : (
+							<Alert onClose={handleClose} severity="success">
+								Password successfully changed.
+							</Alert>
+						)}
 					</Snackbar>
 				</form>
 			</div>

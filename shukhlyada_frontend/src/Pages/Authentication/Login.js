@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
+import MuiAlert from "@material-ui/lab/Alert";
 
 function Copyright() {
 	return (
@@ -48,6 +49,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginForm() {
 	const classes = useStyles();
+	const [mail, setMail] = useState("");
+	const [password, setPassword] = useState("");
+	const [errors, setError] = useState("");
+	const [visible, setVisible] = useState(0);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if ((password && password.length < 6) || password.length > 32) {
+			setError("Password must be more than 6 characters and less than 32");
+			setVisible(100);
+		} else {
+			setVisible(0);
+		}
+	};
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -59,7 +74,7 @@ export default function LoginForm() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<form className={classes.form} noValidate>
+				<form className={classes.form} onSubmit={handleSubmit}>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -68,8 +83,12 @@ export default function LoginForm() {
 						id="email"
 						label="Email Address"
 						name="email"
+						type="email"
 						autoComplete="email"
 						autoFocus
+						onChange={(e) => {
+							setMail(e.target.value);
+						}}
 					/>
 					<TextField
 						variant="outlined"
@@ -81,11 +100,17 @@ export default function LoginForm() {
 						type="password"
 						id="password"
 						autoComplete="current-password"
+						onChange={(e) => {
+							setPassword(e.target.value);
+						}}
 					/>
 					<FormControlLabel
 						control={<Checkbox value="remember" color="primary" />}
 						label="Remember me"
 					/>
+					<MuiAlert severity="error" style={{ opacity: `${visible}%` }}>
+						{errors}
+					</MuiAlert>
 					<Button
 						type="submit"
 						fullWidth
