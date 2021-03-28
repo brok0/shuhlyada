@@ -47,7 +47,38 @@ namespace Shukhlyada.Api.Controllers
             var readChannelDTO = _mapper.Map<ReadChannelDTO>(channel);
             return Ok(readChannelDTO);
         }
+        [Authorize]
+        [HttpPost]
+        [Route("/post/new")]
+        public async Task<IActionResult> CreatePost(CreatePostDTO PostDTO)
+        {
+            var post = _mapper.Map<Post>(PostDTO);
+            var createdPost = await _channelService.CreatePostAsync(post);
+            return Ok(createdPost); // незнаю чи варто шось повертити крім екшнрезалту, але хай буде для тесту
 
+        }
+        [Authorize]
+        [HttpGet]
+        [Route("/post/get")]
+        public async Task<IActionResult> GetPost(Guid id)
+        {
+            var post = await _channelService.GetPostByIdAsync(id);
+            
+            if(post == null)
+            { return NotFound(); }
+
+            var ReadPostDto = _mapper.Map<ReadChannelDTO>(post);
+            return Ok(ReadPostDto);
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("/post/delete")]
+        public async Task<IActionResult> DeletePost(Guid id)
+        {
+            var postName = await _channelService.DeletePost(id);
+            return Ok(postName);
+        }
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }

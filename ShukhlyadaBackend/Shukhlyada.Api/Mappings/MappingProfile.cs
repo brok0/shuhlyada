@@ -17,6 +17,9 @@ namespace Shukhlyada.Api.Mappings
 
             CreateMap<CreateChannelDTO, Channel>();
             CreateMap<Channel, ReadChannelDTO>();
+
+            CreateMap<CreatePostDTO, Post>();
+            CreateMap<Post, ReadPostDTO>();
         }
     }
 }
