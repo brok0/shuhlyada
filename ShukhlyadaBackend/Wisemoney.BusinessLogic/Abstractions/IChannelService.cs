@@ -13,7 +13,7 @@ namespace Shukhlyada.BusinessLogic.Abstractions
 
         public Task<List<Post>> GetAllPostsForChannel(Guid channelId);
 
-        public Task<Post> CreatePostAsync(Post post);
+        public Task<Post> CreatePostAsync(Post post,Guid creatorId);
 
         public Task<Post> GetPostByIdAsync(Guid id);
 

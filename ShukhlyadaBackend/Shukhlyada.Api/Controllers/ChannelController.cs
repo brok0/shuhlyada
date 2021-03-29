@@ -32,6 +32,7 @@ namespace Shukhlyada.Api.Controllers
             var channel = _mapper.Map<Channel>(createChannelDTO);
             var createdChannel = await _channelService.CreateChannelAsync(channel, UserId);
             var readChannelDTO = _mapper.Map<ReadChannelDTO>(createdChannel);
+
             return Ok(readChannelDTO);
         }
 
@@ -40,26 +41,28 @@ namespace Shukhlyada.Api.Controllers
         public async Task<ActionResult> GetChannelByNameAsync(string channelName)
         {
             var channel = await _channelService.GetChannelByNameAsync(channelName);
+
             if(channel == null)
             {
                 return NotFound();
             }
+
             var readChannelDTO = _mapper.Map<ReadChannelDTO>(channel);
             return Ok(readChannelDTO);
         }
         [Authorize]
-        [HttpPost]
-        [Route("/post/new")]
+        [HttpPost("/post/")]
         public async Task<IActionResult> CreatePost(CreatePostDTO PostDTO)
         {
+           
             var post = _mapper.Map<Post>(PostDTO);
-            var createdPost = await _channelService.CreatePostAsync(post);
-            return Ok(createdPost); // незнаю чи варто шось повертити крім екшнрезалту, але хай буде для тесту
+            var createdPost = await _channelService.CreatePostAsync(post,UserId);
+            var readPostDTO = _mapper.Map<ReadPostDTO>(createdPost);
+            return Ok(readPostDTO); // незнаю чи варто шось повертити крім екшнрезалту, але хай буде для тесту
 
         }
         [Authorize]
-        [HttpGet]
-        [Route("/post/get")]
+        [HttpGet("/post/{id}")]
         public async Task<IActionResult> GetPost(Guid id)
         {
             var post = await _channelService.GetPostByIdAsync(id);
@@ -67,17 +70,16 @@ namespace Shukhlyada.Api.Controllers
             if(post == null)
             { return NotFound(); }
 
-            var ReadPostDto = _mapper.Map<ReadChannelDTO>(post);
+            var ReadPostDto = _mapper.Map<ReadPostDTO>(post);
             return Ok(ReadPostDto);
         }
 
         [Authorize]
-        [HttpDelete]
-        [Route("/post/delete")]
+        [HttpDelete("/post/{id}")]
         public async Task<IActionResult> DeletePost(Guid id)
         {
-            var postName = await _channelService.DeletePost(id);
-            return Ok(postName);
+             await _channelService.DeletePost(id);
+            return NoContent();
         }
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }

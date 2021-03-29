@@ -43,10 +43,19 @@ namespace Shukhlyada.BusinessLogic.Services
         }
 
         // --------------POSTS-------------- // untested
-        public async Task<Post> CreatePostAsync(Post post)
+        public async Task<Post> CreatePostAsync(Post post,Guid creatorId)
         {
+            post.AccountId = creatorId;
+            var channel = await _channelRepository.GetByIdAsync(post.ChannelId);
+
+            if (channel.Posts == null)
+                channel.Posts = new List<Post>(){post};
+
+            channel.Posts.Add(post);
+
             _postRepository.Insert(post);
             await _postRepository.UnitOfWork.SaveChangesAsync();
+
             return post; 
         }
 
