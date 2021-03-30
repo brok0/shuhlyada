@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shukhlyada.Api.DTOs
+namespace Shukhlyada.Api.DTOs.Post
 {
     public class ReadPostDTO
     {

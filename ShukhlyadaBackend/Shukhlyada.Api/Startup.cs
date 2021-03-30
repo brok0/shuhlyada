@@ -21,7 +21,9 @@ using Shukhlyada.Infrastructure.Abstractions;
 using Shukhlyada.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Shukhlyada.Api
@@ -39,7 +41,7 @@ namespace Shukhlyada.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 
             services.Configure<ElasticEmailCredentials>(Configuration.GetSection("ElasticEmailCredentials"));
 
@@ -62,6 +64,9 @@ namespace Shukhlyada.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shukhlyada.Api", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
 
                 c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
                 {

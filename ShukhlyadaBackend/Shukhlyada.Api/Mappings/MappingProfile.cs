@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
 using Shukhlyada.Api.DTOs;
+using Shukhlyada.Api.DTOs.Account;
+using Shukhlyada.Api.DTOs.Channel;
+using Shukhlyada.Api.DTOs.Comment;
+using Shukhlyada.Api.DTOs.Post;
 using Shukhlyada.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +20,8 @@ namespace Shukhlyada.Api.Mappings
             CreateMap<Account, UserReadDTO>();
 
             CreateMap<CreateChannelDTO, Channel>();
-            CreateMap<Channel, ReadChannelDTO>();
+            CreateMap<Channel, ReadChannelWithoutPostsDTO>();
+            CreateMap<Channel, ReadChannelWithPostsDTO>();
 
             CreateMap<CreatePostDTO, Post>();
             CreateMap<Post, ReadPostDTO>()

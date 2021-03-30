@@ -90,11 +90,11 @@ namespace Shukhlyada.BusinessLogic.Services
             return postToDelete.Title;
         }
 
-        public async Task<List<Post>> GetAllPostsForChannel(string channelName) 
+        public async Task<Channel> GetChannelWithPostsAsync(string channelName) 
         {
-            var posts = new ChannelWithPostsSpecification(channelName);
-            var postList = await _postRepository.GetAsync(posts);
-            return postList.ToList();
+            var spec = new ChannelWithPostsSpecification(channelName);
+            var channelWithPosts = await _channelRepository.GetSingleAsync(spec);
+            return channelWithPosts;
         }
 
         public async Task<Post> GetPostByIdAsync(Guid id)
@@ -147,7 +147,36 @@ namespace Shukhlyada.BusinessLogic.Services
             return comment;
         }
 
-        
-       
+        //public async Task<int> LikeComment(Guid commentId, Guid userId)
+        //{
+        //    var post = await _postRepository.GetByIdAsync(commentId);
+
+        //    var user = await _accountRepository.GetByIdAsync(userId);
+
+        //    var isUserLiked = post.UsersLiked.Contains(user);
+
+        //    if (post.UsersLiked == null)
+        //    {
+        //        post.UsersLiked = new List<Account>();
+        //    }
+
+        //    if (isUserLiked)
+        //    {
+        //        post.UsersLiked.Remove(user);  // if user likes second time his like automatically removes
+        //    }
+        //    else
+        //    {
+        //        post.UsersLiked.Add(user);
+        //    }
+
+
+        //    await _postRepository.UnitOfWork.SaveChangesAsync();
+
+        //    return post.UsersLiked.Count();
+
+        //}
+
+
+
     }
 }

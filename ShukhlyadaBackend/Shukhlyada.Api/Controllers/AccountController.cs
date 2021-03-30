@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shukhlyada.Api.DTOs;
+using Shukhlyada.Api.DTOs.Account;
 using Shukhlyada.BusinessLogic.Abstractions;
 using Shukhlyada.Domain.Models;
 using System;

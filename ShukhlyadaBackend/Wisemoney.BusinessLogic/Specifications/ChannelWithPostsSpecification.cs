@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Shukhlyada.BusinessLogic.Specifications
 {
-    class ChannelWithPostsSpecification : Specification<Post>
+    class ChannelWithPostsSpecification : Specification<Channel>
     {
         public ChannelWithPostsSpecification(string channelName)
         {
-            Query.Where(p => p.ChannelId == channelName);
+            Query.Where(c => c.Id == channelName).Include(c => c.Posts).ThenInclude(p => p.UsersLiked);
         }
     }
 }
