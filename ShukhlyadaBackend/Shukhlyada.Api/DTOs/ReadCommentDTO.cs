@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 
 namespace Shukhlyada.Api.DTOs
 {
-    public class ReadPostDTO
+    public class ReadCommentDTO
     {
         public Guid Id { get; set; }
 
+        public Guid PostId { get; set; }
+        
         public Guid AccountId { get; set; }
-
-        public Guid ChannelId { get; set; }
-
-        public DateTime PublishedDate { get; set; }
-        public string Title { get; set; }
+       
         public string Content { get; set; }
-        public int Likes { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        //isliked prop to restrict user from spamming likes
+      
     }
 }

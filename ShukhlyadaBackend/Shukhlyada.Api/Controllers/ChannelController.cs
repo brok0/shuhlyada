@@ -51,7 +51,7 @@ namespace Shukhlyada.Api.Controllers
             return Ok(readChannelDTO);
         }
         [Authorize]
-        [HttpPost("/post/")]
+        [HttpPost("post/")]
         public async Task<IActionResult> CreatePost(CreatePostDTO PostDTO)
         {
            
@@ -62,7 +62,7 @@ namespace Shukhlyada.Api.Controllers
 
         }
         [Authorize]
-        [HttpGet("/post/{id}")]
+        [HttpGet("post/{id}")]
         public async Task<IActionResult> GetPost(Guid id)
         {
             var post = await _channelService.GetPostByIdAsync(id);
@@ -75,11 +75,49 @@ namespace Shukhlyada.Api.Controllers
         }
 
         [Authorize]
-        [HttpDelete("/post/{id}")]
+        [HttpDelete("post/{id}")]
         public async Task<IActionResult> DeletePost(Guid id)
         {
              await _channelService.DeletePost(id);
             return NoContent();
+        }
+
+        /// 
+     
+        [Authorize]
+        [HttpPost("post/like/{PostId}")]
+
+        public async Task<IActionResult> LikePost(Guid PostId)
+        {
+            var likeCount = await _channelService.LikePost(PostId, UserId);
+            return Ok(likeCount);
+        }
+
+
+        [Authorize]
+        [HttpPost("post/comment/")]
+        public async Task<IActionResult> CommentPost (CommentCreateDTO comment)
+        {
+            var mapComment = _mapper.Map<Comment>(comment);
+            await _channelService.LeaveComment(mapComment, UserId);
+
+            return Ok();
+
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{ChannelId}/post")]
+        public async Task<IActionResult> GetPostsForChannel (Guid ChannelId)
+        {
+            var postList = await _channelService.GetAllPostsForChannel(ChannelId);
+            var mappedPostList = new List<ReadPostDTO>();
+            
+            foreach(var a in postList)
+            {
+                mappedPostList.Add(_mapper.Map<ReadPostDTO>(a));
+            }
+            return Ok(mappedPostList);
+
         }
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }

@@ -1,8 +1,11 @@
-﻿using Shukhlyada.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Shukhlyada.Domain.Models;
 using Shukhlyada.Infrastructure.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Shukhlyada.Infrastructure.Repositories
 {
@@ -13,5 +16,13 @@ namespace Shukhlyada.Infrastructure.Repositories
         public PostRepository(AppDbContext context) : base(context)
         { }
 
+        public async Task<Post> GetByIdAsync(Guid Id)
+        {
+            return await _dbSet.Where(x => x.Id.Equals(Id))
+                               .Include(x =>  x.UsersLiked)
+                               .Include(x => x.Comments)
+                               .AsSplitQuery()
+                               .FirstOrDefaultAsync();
+        }
     }
 }

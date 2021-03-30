@@ -19,7 +19,12 @@ namespace Shukhlyada.Api.Mappings
             CreateMap<Channel, ReadChannelDTO>();
 
             CreateMap<CreatePostDTO, Post>();
-            CreateMap<Post, ReadPostDTO>();
+            CreateMap<Post, ReadPostDTO>()
+                .ForMember(d => d.Likes, 
+                o => o.MapFrom(post => post.UsersLiked != null ? post.UsersLiked.Count() : 0));
+
+            CreateMap<CommentCreateDTO, Comment>();
+            CreateMap<Comment, ReadCommentDTO>();
         }
     }
 }

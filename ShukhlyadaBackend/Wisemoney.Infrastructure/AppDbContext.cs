@@ -152,7 +152,8 @@ namespace Shukhlyada.Infrastructure
                         c.Property(c => c.Content) //обмеження?
                         .IsRequired();
 
-
+                        c.Property(c => c.CreatedDate)
+                        .HasDefaultValueSql("getdate()");
                     });
 
             //reports

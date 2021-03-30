@@ -9,6 +9,7 @@ namespace Shukhlyada.BusinessLogic.Abstractions
     public interface IChannelService
     {
         public Task<Channel> CreateChannelAsync(Channel channel, Guid creatorId);
+
         public Task<Channel> GetChannelByNameAsync(string name);
 
         public Task<List<Post>> GetAllPostsForChannel(Guid channelId);
@@ -18,6 +19,12 @@ namespace Shukhlyada.BusinessLogic.Abstractions
         public Task<Post> GetPostByIdAsync(Guid id);
 
         public Task<string> DeletePost(Guid id); // returning string to show user that post with its name was deleted
+
+        public Task<int> LikePost(Guid postId,Guid userId);
+
+        public Task<Comment> LeaveComment(Comment comment,Guid byUserId);
+
+        public Task SubscribeToChannel(Guid UserId, Guid ChannelId);
 
 
 
