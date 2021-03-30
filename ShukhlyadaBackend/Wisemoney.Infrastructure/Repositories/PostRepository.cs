@@ -21,7 +21,6 @@ namespace Shukhlyada.Infrastructure.Repositories
             return await _dbSet.Where(x => x.Id.Equals(Id))
                                .Include(x =>  x.UsersLiked)
                                .Include(x => x.Comments)
-                               .AsSplitQuery()
                                .FirstOrDefaultAsync();
         }
     }

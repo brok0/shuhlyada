@@ -43,7 +43,8 @@ namespace Shukhlyada.Api
 
             services.Configure<ElasticEmailCredentials>(Configuration.GetSection("ElasticEmailCredentials"));
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShukhlyadaDB")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShukhlyadaDB"),
+                                                                                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             services.AddAutoMapper(typeof(Startup));
 
