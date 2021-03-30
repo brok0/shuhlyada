@@ -12,7 +12,7 @@ namespace Shukhlyada.Api.DTOs
 
         public Guid AccountId { get; set; }
 
-        public Guid ChannelId { get; set; }
+        public string ChannelId { get; set; }
 
         public DateTime PublishedDate { get; set; }
         public string Title { get; set; }

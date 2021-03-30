@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shukhlyada.Infrastructure.Abstractions
 {
-    public interface IChannelRepository: IRepository<Channel, Guid>
+    public interface IChannelRepository: IRepository<Channel, string>
     {
-        public Task<Channel> GetByNameAsync(string name);
     }
 }

@@ -51,10 +51,6 @@ namespace Shukhlyada.Infrastructure
             {
                 c.HasKey(c => c.Id);
 
-                c.Property(c => c.Name)
-                .HasMaxLength(100)
-                .IsRequired();
-
                 c.Property(c => c.Description)
                 .IsRequired();
 

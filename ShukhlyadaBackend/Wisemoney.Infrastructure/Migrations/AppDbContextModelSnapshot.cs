@@ -24,8 +24,8 @@ namespace Shukhlyada.Infrastructure.Migrations
                     b.Property<Guid>("SubscribersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SubscriptionsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("SubscriptionsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("SubscribersId", "SubscriptionsId");
 
@@ -72,8 +72,8 @@ namespace Shukhlyada.Infrastructure.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ChannelId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ChannelId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Permissions")
                         .IsRequired()
@@ -132,9 +132,8 @@ namespace Shukhlyada.Infrastructure.Migrations
 
             modelBuilder.Entity("Shukhlyada.Domain.Models.Channel", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfCreation")
                         .ValueGeneratedOnAdd()
@@ -144,11 +143,6 @@ namespace Shukhlyada.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -171,7 +165,9 @@ namespace Shukhlyada.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.HasKey("Id", "PostId");
 
@@ -191,8 +187,9 @@ namespace Shukhlyada.Infrastructure.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ChannelId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -223,8 +220,8 @@ namespace Shukhlyada.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ChannelId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ChannelId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("PostId")
                         .HasColumnType("uniqueidentifier");

@@ -7,7 +7,7 @@ namespace Shukhlyada.Api.DTOs
 {
     public class CreateChannelDTO
     {
-        public string Name { get; set; }
+        public string Id { get; set; }
         public string Description { get; set; }
     }
 }

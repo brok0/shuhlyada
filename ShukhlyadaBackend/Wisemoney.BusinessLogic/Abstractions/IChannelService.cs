@@ -10,9 +10,9 @@ namespace Shukhlyada.BusinessLogic.Abstractions
     {
         public Task<Channel> CreateChannelAsync(Channel channel, Guid creatorId);
 
-        public Task<Channel> GetChannelByNameAsync(string name);
+        public Task<Channel> GetChannelAsync(string name);
 
-        public Task<List<Post>> GetAllPostsForChannel(Guid channelId);
+        public Task<List<Post>> GetAllPostsForChannel(string channelId);
 
         public Task<Post> CreatePostAsync(Post post,Guid creatorId);
 
@@ -24,7 +24,7 @@ namespace Shukhlyada.BusinessLogic.Abstractions
 
         public Task<Comment> LeaveComment(Comment comment,Guid byUserId);
 
-        public Task SubscribeToChannel(Guid UserId, Guid ChannelId);
+        public Task SubscribeToChannel(Guid UserId, string ChannelId);
 
 
 

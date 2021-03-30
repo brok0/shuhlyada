@@ -28,7 +28,7 @@ namespace Shukhlyada.BusinessLogic.Services
 
         public async Task<Channel> CreateChannelAsync(Channel channel, Guid creatorId)
         {
-            if (await _channelRepository.GetByNameAsync(channel.Name) != null)
+            if (await _channelRepository.GetByIdAsync(channel.Id) != null)
             {
                 throw new ChannelAlreadyExistException();
             }
@@ -40,14 +40,14 @@ namespace Shukhlyada.BusinessLogic.Services
             return newChannel;
         }
 
-        public async Task<Channel> GetChannelByNameAsync(string name)
+        public async Task<Channel> GetChannelAsync(string name)
         {
-            return await _channelRepository.GetByNameAsync(name);
+            return await _channelRepository.GetByIdAsync(name);
         }
-        public async Task SubscribeToChannel(Guid UserId, Guid ChannelId)
+        public async Task SubscribeToChannel(Guid UserId, string ChannelName)
         {
             var user = await _accountRepository.GetByIdAsync(UserId);
-            var channel = await _channelRepository.GetByIdAsync(ChannelId);
+            var channel = await _channelRepository.GetByIdAsync(ChannelName);
 
             //channel cant have 0 subs
 
@@ -90,9 +90,9 @@ namespace Shukhlyada.BusinessLogic.Services
             return postToDelete.Title;
         }
 
-        public async Task<List<Post>> GetAllPostsForChannel(Guid channelId) 
+        public async Task<List<Post>> GetAllPostsForChannel(string channelName) 
         {
-            var posts = new PostsInChannelSpecification(channelId);
+            var posts = new ChannelWithPostsSpecification(channelName);
             var postList = await _postRepository.GetAsync(posts);
             return postList.ToList();
         }
@@ -107,20 +107,23 @@ namespace Shukhlyada.BusinessLogic.Services
             var post =  await _postRepository.GetByIdAsync(postId);
 
             var user = await _accountRepository.GetByIdAsync(userId);
-            
-            if(post.UsersLiked == null)
+
+            var isUserLiked = post.UsersLiked.Contains(user);
+
+            if (post.UsersLiked == null)
             {
                 post.UsersLiked = new List<Account>();
             }
             
-            else if (post.UsersLiked.Contains(user))
+            if (isUserLiked)
             {
                 post.UsersLiked.Remove(user);  // if user likes second time his like automatically removes
-
-                return post.UsersLiked.Count();
+            }
+            else
+            {
+                post.UsersLiked.Add(user);
             }
 
-            post.UsersLiked.Add(user);
 
             await _postRepository.UnitOfWork.SaveChangesAsync();
 
