@@ -12,19 +12,21 @@ namespace Shukhlyada.BusinessLogic.Abstractions
 
         public Task<Channel> GetChannelAsync(string name);
 
+        public Task<List<Channel>> GetAllChannelsAsync();
+
         public Task<Channel> GetChannelWithPostsAsync(string channelName);
 
         public Task<Post> CreatePostAsync(Post post,Guid creatorId);
 
         public Task<Post> GetPostByIdAsync(Guid id);
 
-        public Task<string> DeletePost(Guid id); // returning string to show user that post with its name was deleted
+        public Task<string> DeletePostAsync(Guid id); // returning string to show user that post with its name was deleted
 
-        public Task<int> LikePost(Guid postId,Guid userId);
+        public Task<int> LikePostAsync(Guid postId,Guid userId);
 
-        public Task<Comment> LeaveComment(Comment comment,Guid byUserId);
+        public Task<Comment> LeaveCommentAsync(Comment comment,Guid byUserId);
 
-        public Task SubscribeToChannel(Guid UserId, string ChannelId);
+        public Task SubscribeToChannelAsync(Guid UserId, string ChannelId);
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Shukhlyada.BusinessLogic.Abstractions;
+using Shukhlyada.BusinessLogic.Exstensions;
 using Shukhlyada.BusinessLogic.Specifications;
 using Shukhlyada.Domain.Exceptions;
 using Shukhlyada.Domain.Models;
@@ -33,31 +34,48 @@ namespace Shukhlyada.BusinessLogic.Services
                 throw new ChannelAlreadyExistException();
             }
 
-            channel.UsersPermissions = new List<AccessLevel> { new AccessLevel { AccountId=creatorId, Permissions="creator"} };
+            channel.UsersPermissions = new List<AccessLevel> { new AccessLevel { AccountId=creatorId, Permissions="creator;"} };
 
             var newChannel = _channelRepository.Insert(channel);
             await _channelRepository.UnitOfWork.SaveChangesAsync();
             return newChannel;
         }
 
+        public async Task<List<Channel>> GetAllChannelsAsync()
+        {
+            var channels = await _channelRepository.GetAllAsync();
+            return channels.ToList();
+        }
+
         public async Task<Channel> GetChannelAsync(string name)
         {
             return await _channelRepository.GetByIdAsync(name);
         }
-        public async Task SubscribeToChannel(Guid UserId, string ChannelName)
+
+        public async Task SubscribeToChannelAsync(Guid UserId, string ChannelName)
         {
-            var user = await _accountRepository.GetByIdAsync(UserId);
+            var spec = new UserWithPermissionsSpecification(UserId);
+            var user = await _accountRepository.GetSingleAsync(spec);
             var channel = await _channelRepository.GetByIdAsync(ChannelName);
 
-            //channel cant have 0 subs
 
-            if(channel.Subscribers.Contains(user))
+
+            if(channel.Subscribers == null)
+            {
+                channel.Subscribers = new List<Account>();
+            }
+            else if(channel.Subscribers.Contains(user))//channel cant have 0 subs
             {
                 throw new UserAlreadySubscribedException();
             }
-
+            else if(user.PermissionsInChannels.FirstOrDefault(x => x.ChannelId.Equals(ChannelName)).Permissions.FindPermission("creator"))
+            {
+                throw new CreatorCantLeaveFromChannelException();
+            }
             channel.Subscribers.Add(user);
-            
+
+            _channelRepository.Update(channel);
+            await _channelRepository.UnitOfWork.SaveChangesAsync();
         }
 
         // --------------POSTS-------------- 
@@ -77,7 +95,7 @@ namespace Shukhlyada.BusinessLogic.Services
             return post; 
         }
 
-        public async Task<string> DeletePost(Guid id)
+        public async Task<string> DeletePostAsync(Guid id)
         {
 
             var postToDelete = await _postRepository.GetByIdAsync(id);
@@ -102,7 +120,7 @@ namespace Shukhlyada.BusinessLogic.Services
             return await _postRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> LikePost(Guid postId,Guid userId)
+        public async Task<int> LikePostAsync(Guid postId,Guid userId)
         {
             var post =  await _postRepository.GetByIdAsync(postId);
 
@@ -124,14 +142,14 @@ namespace Shukhlyada.BusinessLogic.Services
                 post.UsersLiked.Add(user);
             }
 
-
+            _postRepository.Update(post);
             await _postRepository.UnitOfWork.SaveChangesAsync();
 
             return post.UsersLiked.Count();
             
         }
 
-        public async Task<Comment> LeaveComment(Comment comment, Guid byUserId)
+        public async Task<Comment> LeaveCommentAsync(Comment comment, Guid byUserId)
         {
             var post = await _postRepository.GetByIdAsync(comment.PostId);
            
@@ -143,9 +161,11 @@ namespace Shukhlyada.BusinessLogic.Services
             comment.AccountId = byUserId;
             post.Comments.Add(comment);
 
+            _postRepository.Update(post);
             await _postRepository.UnitOfWork.SaveChangesAsync();
             return comment;
         }
+
 
         //public async Task<int> LikeComment(Guid commentId, Guid userId)
         //{

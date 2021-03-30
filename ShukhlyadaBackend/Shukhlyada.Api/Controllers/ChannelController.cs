@@ -41,7 +41,6 @@ namespace Shukhlyada.Api.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="channel"></param>
         /// <returns>A newly created Channel</returns>
         /// <response code="201">Returns the newly created channel</response>
         /// <response code="400">If the channel is already exists</response>
@@ -53,12 +52,21 @@ namespace Shukhlyada.Api.Controllers
             var createdChannel = await _channelService.CreateChannelAsync(channel, UserId);
             var readChannelDTO = _mapper.Map<ReadChannelWithoutPostsDTO>(createdChannel);
 
-            return CreatedAtAction(nameof(GetChannelByNameAsync),new { channelName = readChannelDTO.Id},readChannelDTO);
+            return CreatedAtAction(nameof(GetChannelAsync),new { channelName = readChannelDTO.Id},readChannelDTO);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult> GetAllChannels()
+        {
+            var channels = await _channelService.GetAllChannelsAsync();
+            var channelsDTOs = _mapper.Map<List<Channel>>(channels);
+            return Ok(channelsDTOs);
         }
 
         [AllowAnonymous]
         [HttpGet("{channelName}")]
-        public async Task<ActionResult> GetChannelByNameAsync(string channelName)
+        public async Task<ActionResult> GetChannelAsync(string channelName)
         {
             var channel = await _channelService.GetChannelAsync(channelName);
 
@@ -70,6 +78,17 @@ namespace Shukhlyada.Api.Controllers
             var readChannelDTO = _mapper.Map<ReadChannelWithoutPostsDTO>(channel);
             return Ok(readChannelDTO);
         }
+
+
+        [Authorize]
+        [HttpPut("{channelName}")]
+        public async Task<ActionResult> SubscribeToChannelAsync(string channelName)
+        {
+            await _channelService.SubscribeToChannelAsync(UserId, channelName);
+            return Ok();
+        }
+
+
         [Authorize]
         [HttpPost("post/")]
         public async Task<IActionResult> CreatePostAsync(CreatePostDTO PostDTO)
@@ -78,7 +97,7 @@ namespace Shukhlyada.Api.Controllers
             var post = _mapper.Map<Post>(PostDTO);
             var createdPost = await _channelService.CreatePostAsync(post,UserId);
             var readPostDTO = _mapper.Map<ReadPostDTO>(createdPost);
-            return Ok(readPostDTO); // незнаю чи варто шось повертити крім екшнрезалту, але хай буде для тесту
+            return CreatedAtAction(nameof(GetPostAsync), new { id = readPostDTO.Id }, readPostDTO);
 
         }
         [AllowAnonymous]
@@ -98,18 +117,18 @@ namespace Shukhlyada.Api.Controllers
         [HttpDelete("post/{id}")]
         public async Task<IActionResult> DeletePostAsync(Guid id)
         {
-             await _channelService.DeletePost(id);
+             await _channelService.DeletePostAsync(id);
             return NoContent();
         }
 
         /// 
      
         [Authorize]
-        [HttpPost("post/like/{PostId}")]
+        [HttpPut("post/like/{PostId}")]
 
         public async Task<IActionResult> LikePostAsync(Guid PostId)
         {
-            var likeCount = await _channelService.LikePost(PostId, UserId);
+            var likeCount = await _channelService.LikePostAsync(PostId, UserId);
             return Ok(likeCount);
         }
 
@@ -119,7 +138,7 @@ namespace Shukhlyada.Api.Controllers
         public async Task<IActionResult> CommentPostAsync (CommentCreateDTO comment)
         {
             var mapComment = _mapper.Map<Comment>(comment);
-            await _channelService.LeaveComment(mapComment, UserId);
+            await _channelService.LeaveCommentAsync(mapComment, UserId);
 
             return Ok();
 
