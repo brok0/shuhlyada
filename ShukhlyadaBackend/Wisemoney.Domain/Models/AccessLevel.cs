@@ -9,7 +9,7 @@ namespace Shukhlyada.Domain.Models
         public Guid AccountId { get; set; }
         public Account Account { get; set; }
 
-        public Guid ChannelId { get; set; }
+        public string ChannelId { get; set; }
         public Channel Channel { get; set; }
 
         //"delete posts;ban users;rename channel;add moderators;..."

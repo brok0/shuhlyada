@@ -40,7 +40,7 @@ namespace Shukhlyada.Api.Controllers
         [HttpGet("{channelName}")]
         public async Task<ActionResult> GetChannelByNameAsync(string channelName)
         {
-            var channel = await _channelService.GetChannelByNameAsync(channelName);
+            var channel = await _channelService.GetChannelAsync(channelName);
 
             if(channel == null)
             {
@@ -61,7 +61,7 @@ namespace Shukhlyada.Api.Controllers
             return Ok(readPostDTO); // незнаю чи варто шось повертити крім екшнрезалту, але хай буде для тесту
 
         }
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("post/{id}")]
         public async Task<IActionResult> GetPost(Guid id)
         {
@@ -106,10 +106,10 @@ namespace Shukhlyada.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("{ChannelId}/post")]
-        public async Task<IActionResult> GetPostsForChannel (Guid ChannelId)
+        [HttpGet("{channelName}/post")]
+        public async Task<IActionResult> GetPostsForChannel (string channelName)
         {
-            var postList = await _channelService.GetAllPostsForChannel(ChannelId);
+            var postList = await _channelService.GetAllPostsForChannel(channelName);
             var mappedPostList = new List<ReadPostDTO>();
             
             foreach(var a in postList)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Shukhlyada.Infrastructure.Migrations
 {
-    public partial class init : Migration
+    public partial class newInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,8 +16,8 @@ namespace Shukhlyada.Infrastructure.Migrations
                     Email = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     ProfilePictureId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
-                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
@@ -29,8 +29,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                 name: "Channels",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
@@ -44,7 +43,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChannelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Permissions = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -70,7 +69,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChannelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -96,7 +95,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                 columns: table => new
                 {
                     SubscribersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SubscriptionsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +122,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -171,7 +170,7 @@ namespace Shukhlyada.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ChannelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ChannelId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
