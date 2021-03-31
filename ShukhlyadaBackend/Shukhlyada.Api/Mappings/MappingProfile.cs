@@ -27,9 +27,14 @@ namespace Shukhlyada.Api.Mappings
             CreateMap<Post, ReadPostDTO>()
                 .ForMember(d => d.Likes, 
                 o => o.MapFrom(post => post.UsersLiked != null ? post.UsersLiked.Count() : 0));
+            CreateMap<Post, ReadPostWithCommentsDTO>();
+
 
             CreateMap<CommentCreateDTO, Comment>();
             CreateMap<Comment, ReadCommentDTO>();
+
+            
+            
         }
     }
 }

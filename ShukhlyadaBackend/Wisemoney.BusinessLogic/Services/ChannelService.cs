@@ -148,12 +148,12 @@ namespace Shukhlyada.BusinessLogic.Services
             return post.UsersLiked.Count();
             
         }
-
+        // ---------------COMMENTS-------------------
         public async Task<Comment> LeaveCommentAsync(Comment comment, Guid byUserId)
         {
             var post = await _postRepository.GetByIdAsync(comment.PostId);
            
-            if(post.Comments == null)
+            if(post.Comments == null) // getById gets post with comments / doesnt checks the condition
             {
                 post.Comments = new List<Comment>();
             }
@@ -166,6 +166,7 @@ namespace Shukhlyada.BusinessLogic.Services
             return comment;
         }
 
+       
 
         //public async Task<int> LikeComment(Guid commentId, Guid userId)
         //{

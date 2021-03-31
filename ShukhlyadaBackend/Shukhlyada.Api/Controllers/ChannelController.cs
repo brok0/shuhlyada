@@ -54,6 +54,10 @@ namespace Shukhlyada.Api.Controllers
 
             return CreatedAtAction(nameof(GetChannelAsync),new { channelName = readChannelDTO.Id},readChannelDTO);
         }
+        /// <summary>
+        /// Returns all Channels in database without searching .
+        /// </summary>
+
 
         [AllowAnonymous]
         [HttpGet]
@@ -64,6 +68,10 @@ namespace Shukhlyada.Api.Controllers
             return Ok(channelsDTOs);
         }
 
+        /// <summary>
+        /// Returns specific channel by name.
+        /// </summary>
+  
         [AllowAnonymous]
         [HttpGet("{channelName}")]
         public async Task<ActionResult> GetChannelAsync(string channelName)
@@ -79,7 +87,10 @@ namespace Shukhlyada.Api.Controllers
             return Ok(readChannelDTO);
         }
 
-
+        /// <summary>
+        /// Subscribe to channel.
+        /// </summary>
+    
         [Authorize]
         [HttpPut("{channelName}")]
         public async Task<ActionResult> SubscribeToChannelAsync(string channelName)
@@ -88,7 +99,10 @@ namespace Shukhlyada.Api.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// Creates post,using json obj.
+        /// </summary>
+      
         [Authorize]
         [HttpPost("post/")]
         public async Task<IActionResult> CreatePostAsync(CreatePostDTO PostDTO)
@@ -100,6 +114,10 @@ namespace Shukhlyada.Api.Controllers
             return CreatedAtAction(nameof(GetPostAsync), new { id = readPostDTO.Id }, readPostDTO);
 
         }
+        /// <summary>
+        /// Return post by id.
+        /// </summary>
+    
         [AllowAnonymous]
         [HttpGet("post/{id}")]
         public async Task<IActionResult> GetPostAsync(Guid id)
@@ -109,9 +127,12 @@ namespace Shukhlyada.Api.Controllers
             if(post == null)
             { return NotFound(); }
 
-            var ReadPostDto = _mapper.Map<ReadPostDTO>(post);
+            var ReadPostDto = _mapper.Map<ReadPostWithCommentsDTO>(post);
             return Ok(ReadPostDto);
         }
+        /// <summary>
+        /// Deletes post.
+        /// </summary>
 
         [Authorize]
         [HttpDelete("post/{id}")]
@@ -121,8 +142,10 @@ namespace Shukhlyada.Api.Controllers
             return NoContent();
         }
 
-        /// 
-     
+        /// <summary>
+        /// Likes post when querid once,unlikes on second request.
+        /// </summary>
+
         [Authorize]
         [HttpPut("post/like/{PostId}")]
 
@@ -132,7 +155,10 @@ namespace Shukhlyada.Api.Controllers
             return Ok(likeCount);
         }
 
-
+        /// <summary>
+        /// Creates comment on specific post.
+        /// </summary>
+      
         [Authorize]
         [HttpPost("post/comment/")]
         public async Task<IActionResult> CommentPostAsync (CommentCreateDTO comment)
@@ -143,7 +169,10 @@ namespace Shukhlyada.Api.Controllers
             return Ok();
 
         }
-
+        /// <summary>
+        /// Returns list of posts for channel.
+        /// </summary>
+       
         [AllowAnonymous]
         [HttpGet("{channelName}/post")]
         public async Task<IActionResult> GetPostsForChannelAsync (string channelName)
@@ -154,6 +183,7 @@ namespace Shukhlyada.Api.Controllers
             return Ok(channelDTO);
 
         }
+
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }

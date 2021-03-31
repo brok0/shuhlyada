@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shukhlyada.Domain.Models;
 using Shukhlyada.Infrastructure.Abstractions;
+using System;
 
 namespace Shukhlyada.Infrastructure
 {
@@ -139,6 +140,7 @@ namespace Shukhlyada.Infrastructure
                         .OnDelete(DeleteBehavior.NoAction),
                     c =>
                     {
+                        c.Property(c => c.Id).HasDefaultValueSql("newid()");
                         //Comment settings
                         c.HasKey(c => new { c.Id, c.PostId });
 
