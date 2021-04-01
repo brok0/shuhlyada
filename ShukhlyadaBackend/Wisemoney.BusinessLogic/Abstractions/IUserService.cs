@@ -10,5 +10,6 @@ namespace Shukhlyada.BusinessLogic.Abstractions
     {
         Task<Account> AuthenticateAsync(string email, string password);
         Task<Account> CreateAccountAsync(Account acc);
+        Task<List<Channel>> GetSubscribedChannelsAsync(Guid userId);
     }
 }

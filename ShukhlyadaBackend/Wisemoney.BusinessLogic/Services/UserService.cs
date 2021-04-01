@@ -1,10 +1,12 @@
 ﻿using Shukhlyada.BusinessLogic.Abstractions;
 using Shukhlyada.BusinessLogic.Exstensions;
+using Shukhlyada.BusinessLogic.Specifications;
 using Shukhlyada.Domain.Exceptions;
 using Shukhlyada.Domain.Models;
 using Shukhlyada.Infrastructure.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,6 +72,20 @@ namespace Shukhlyada.BusinessLogic.Services
             string subject = "Recover Password";
             string body = "Recover Password";
             await _mailService.SendMailAsync(email, subject, body, false);
+        }
+
+        public async Task<List<Channel>> GetSubscribedChannelsAsync(Guid userId)
+        {
+            var channelsSpec = new UserSubscribedChannelsSpecification(userId);
+            var userchannels = await _accountRepository.GetSingleAsync(channelsSpec);
+
+
+            var channels = userchannels.Subscriptions.ToList();
+
+            if(channels.Count==0)
+            { throw new UserNotSubscribedToAnyChannelException(); }
+
+            return channels;
         }
 
     }

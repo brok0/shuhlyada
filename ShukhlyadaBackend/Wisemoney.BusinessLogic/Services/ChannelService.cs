@@ -38,6 +38,7 @@ namespace Shukhlyada.BusinessLogic.Services
 
             var newChannel = _channelRepository.Insert(channel);
             await _channelRepository.UnitOfWork.SaveChangesAsync();
+            await SubscribeToChannelAsync(creatorId, channel.Id);
             return newChannel;
         }
 
@@ -68,10 +69,10 @@ namespace Shukhlyada.BusinessLogic.Services
             {
                 throw new UserAlreadySubscribedException();
             }
-            else if(user.PermissionsInChannels.FirstOrDefault(x => x.ChannelId.Equals(ChannelName)).Permissions.FindPermission("creator"))
-            {
-                throw new CreatorCantLeaveFromChannelException();
-            }
+            //else if(user.PermissionsInChannels.FirstOrDefault(x => x.ChannelId.Equals(ChannelName)).Permissions.FindPermission("creator"))  // unsubscribe
+            //{
+            //    throw new CreatorCantLeaveFromChannelException();
+            //}
             channel.Subscribers.Add(user);
 
             _channelRepository.Update(channel);

@@ -183,6 +183,7 @@ namespace Shukhlyada.Api.Controllers
             return Ok(channelDTO);
 
         }
+        
 
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }
