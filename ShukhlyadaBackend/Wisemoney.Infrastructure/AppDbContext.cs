@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shukhlyada.Domain.Models;
 using Shukhlyada.Infrastructure.Abstractions;
+using System;
 
 namespace Shukhlyada.Infrastructure
 {
@@ -25,7 +26,6 @@ namespace Shukhlyada.Infrastructure
                 .IsRequired();
 
                 a.Property(a => a.Password)
-                .HasMaxLength(32)
                 .IsRequired();
 
                 a.Property(a => a.Email)
@@ -51,10 +51,6 @@ namespace Shukhlyada.Infrastructure
             builder.Entity<Channel>(c =>
             {
                 c.HasKey(c => c.Id);
-
-                c.Property(c => c.Name)
-                .HasMaxLength(100)
-                .IsRequired();
 
                 c.Property(c => c.Description)
                 .IsRequired();
@@ -144,6 +140,7 @@ namespace Shukhlyada.Infrastructure
                         .OnDelete(DeleteBehavior.NoAction),
                     c =>
                     {
+                        c.Property(c => c.Id).HasDefaultValueSql("newid()");
                         //Comment settings
                         c.HasKey(c => new { c.Id, c.PostId });
 
@@ -153,7 +150,8 @@ namespace Shukhlyada.Infrastructure
                         c.Property(c => c.Content) //обмеження?
                         .IsRequired();
 
-
+                        c.Property(c => c.CreatedDate)
+                        .HasDefaultValueSql("getdate()");
                     });
 
             //reports

@@ -7,7 +7,7 @@ namespace Shukhlyada.Domain.Models
 {
     public class Account : IEntity<Guid>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } // --this is channel name/ channel name is unique so it goes like identifier
         public string Username { get; set; }
         public string Email { get; set; }
         public int ProfilePictureId { get; set; }

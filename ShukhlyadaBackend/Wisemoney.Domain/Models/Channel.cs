@@ -5,10 +5,9 @@ using Shukhlyada.Domain.Abstractions;
 
 namespace Shukhlyada.Domain.Models
 {
-    public class Channel : IEntity<Guid>
+    public class Channel : IEntity<string>
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Id { get; set; }
         public string Description { get; set; }
         public DateTime DateOfCreation { get; set; }
 

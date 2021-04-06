@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Shukhlyada.Api.DTOs.Comment
+{
+    public class CommentCreateDTO
+    {
+        public Guid PostId { get; set; }
+        public string Content { get; set; }
+
+    }
+}

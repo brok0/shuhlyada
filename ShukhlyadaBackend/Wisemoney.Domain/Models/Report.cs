@@ -12,7 +12,7 @@ namespace Shukhlyada.Domain.Models
         public Guid? PostId { get; set; }
         public Post ReportedPost { get; set; }
 
-        public Guid? ChannelId { get; set; }
+        public string? ChannelId { get; set; }
         public Channel ReportedChannel { get; set; }
 
         public string Reason { get; set; }

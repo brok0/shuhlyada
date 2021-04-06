@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Shukhlyada.Infrastructure.Repositories
 {
-    class ReportRepository:BaseRepository<Report, Guid>, IReportRepository
+    public class ReportRepository:BaseRepository<Report, Guid>, IReportRepository
     {
         public override IUnitOfWork UnitOfWork => (AppDbContext)_context;
 
