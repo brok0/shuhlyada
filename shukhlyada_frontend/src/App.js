@@ -7,6 +7,7 @@ import RegisterForm from "./Pages/Authentication/Register";
 import ProfilePage from "./Pages/ProfilePage";
 import ForgotPassword from "./Pages/Authentication/ForgotPassword";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
+import PostCommentPage from "./Pages/PostCommentPage";
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
@@ -17,6 +18,7 @@ const Routes = {
 	ERROR: "/error",
 	FORGOT: "/forgotpassword",
 	RESET: "/resetpassword",
+	POST: "/post",
 };
 function App() {
 	return (
@@ -50,6 +52,10 @@ function App() {
 					<Route
 						path={Routes.RESET}
 						render={() => <ResetPassword></ResetPassword>}
+					></Route>
+					<Route
+						path={Routes.POST}
+						render={() => <PostCommentPage></PostCommentPage>}
 					></Route>
 				</Switch>
 			</BrowserRouter>

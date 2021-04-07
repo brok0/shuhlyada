@@ -11,7 +11,7 @@ import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ReactMarkdown from "react-markdown";
 import Grid from "@material-ui/core/Grid";
-import { usePromiseTracker } from "react-promise-tracker";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Divider } from "@material-ui/core";
 import Comment from "../Components/Comment";
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function PostCommentPage(props) {
 	const classes = useStyles();
-	const { promiseInProgress } = usePromiseTracker();
+
 	return (
 		<div id="postCommentWrapper" className={classes.contentBackground}>
 			<h2 className={classes.title}>Title</h2>
@@ -75,9 +75,6 @@ export default function PostCommentPage(props) {
 					</IconButton>
 				</Grid>
 				<Grid item xs={10}>
-					{promiseInProgress === true ? (
-						<CircularProgress> </CircularProgress>
-					) : null}
 					<ReactMarkdown
 						children={props.imagePath}
 						className={classes.media}

@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import MuiAlert from "@material-ui/lab/Alert";
-
+import { Register } from "../../services/AuthenticationService";
 function Copyright() {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
@@ -86,13 +86,13 @@ export default function RegisterForm() {
 	const { name, email, emailConf, password, passwordConf } = state;
 
 	const redirectTime = "500";
+
 	function timedRedirect() {
 		setTimeout('location.href = "/login";', redirectTime);
 	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(password);
 		if (email && email !== emailConf) {
 			setErrors("Your mail is not matching");
 			setVisible(100);
@@ -107,7 +107,7 @@ export default function RegisterForm() {
 			setVisible(100);
 		} else {
 			setVisible(0);
-			timedRedirect(); // if passes all rules than redirect to login page (assume that request is good )
+			Register(state.name, state.email, state.password);
 		}
 	};
 
