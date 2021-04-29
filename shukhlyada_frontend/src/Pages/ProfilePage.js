@@ -12,7 +12,20 @@ import Avatar from "@material-ui/core/Avatar";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
 import { User } from "../services/AuthenticationService";
+import {PostRequest} from "../services/HttpRequests";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const useStyles = makeStyles((theme) => ({
 	contentBackground: {
 		marginTop: "10px",
@@ -42,13 +55,62 @@ const useStyles = makeStyles((theme) => ({
 	usernameGrid: {
 		marginLeft: "10px",
 	},
+	margin: {
+		marginTop: "50px",
+		marginLeft: "15%",
+		width: "340px"
+	},
+	root: {
+		display: "flex",
+		// margin: "20px",
+		flexDirection: "column",
+	},
+	dialogTitle: {
+		marginBottom: "-15px",
+		marginLeft: "40px"
+	},
+	textField: {
+		margin: "15px"
+	}
+
 }));
+
+
 
 export default function ProfilePage() {
 	const classes = useStyles();
 	const [value, setValue] = useState(0);
+	const [name, setName] = useState("");
+	const [description, setDescription] = useState("");
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
+	};
+	const [open, setOpen] = React.useState(false);
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	function CreateChannel() {
+		let url = "http://localhost:5000/Channel";
+		let body = {
+			id: name,
+			description: description,
+		};
+		if (localStorage.getItem("authData") === undefined) {
+			alert("Please log in");
+		} else {
+			PostRequest(url, body);
+		}
+	}
+
+	const handleSubmit = () => {
+		console.log("creating channel with name" + `${name}` + `${description}`);
+		CreateChannel();
+		setOpen(false);
 	};
 
 	function Logout() {
@@ -120,9 +182,42 @@ export default function ProfilePage() {
 								>
 									Logout
 								</Button>
+
 							</Grid>
 						</Grid>
 					</Card>
+					<Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleClickOpen}>
+						Create channel
+					</Button>
+					<Dialog
+						open={open}
+						TransitionComponent={Transition}
+						keepMounted
+						onClose={handleClose}
+						aria-labelledby="alert-dialog-slide-title"
+						aria-describedby="alert-dialog-slide-description"
+					>
+
+						<DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">{"Create channel"}</DialogTitle>
+						<DialogContent >
+							<div className={classes.root} noValidate autoComplete="off">
+								<TextField className={classes.textField} id="standard-basic" label="Name" onChange={(e) => {
+									setName(e.target.value);
+								}} />
+								<TextField className={classes.textField} id="standard-basic" label="Description " multiline onChange={(e) => {
+									setDescription(e.target.value);
+								}}/>
+							</div>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleClose} color="primary">
+								Cancel
+							</Button>
+							<Button onClick={handleSubmit} color="primary">
+								Create
+							</Button>
+						</DialogActions>
+					</Dialog>
 				</Grid>
 			</Grid>
 		</div>
