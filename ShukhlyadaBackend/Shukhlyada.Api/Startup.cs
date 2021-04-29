@@ -91,7 +91,12 @@ namespace Shukhlyada.Api
                 });
             });
 
-
+            services.AddCors(o => o.AddPolicy("ReactPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
@@ -104,22 +109,17 @@ namespace Shukhlyada.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shukhlyada.Api v1"));
+                app.UseCors("ReactPolicy");
             }
 
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection(); //redirects http on https 
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseRouting();
 
-            app.UseCors(c =>
-            {
-                c.AllowAnyOrigin();
-                c.AllowAnyMethod();
-                c.AllowAnyHeader();
-            });
-
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

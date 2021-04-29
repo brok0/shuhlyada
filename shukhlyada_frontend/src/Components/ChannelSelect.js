@@ -1,42 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
+import { GetChannels } from "../services/ChannelServices";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-    title: {
-        flexGrow: 50, // ця залупа відповідає за сторону розміщення пошукового поля(Якщо щось піде не так то видалити її нахуй)
-        display: "none",
-        [theme.breakpoints.up("sm")]: {
-          display: "block",
-          color: "white",
-        },
-    },
-    
-  
+	title: {
+		flexGrow: 50, // ця залупа відповідає за сторону розміщення пошукового поля(Якщо щось піде не так то видалити її нахуй)
+		display: "none",
+		[theme.breakpoints.up("sm")]: {
+			display: "block",
+			color: "white",
+		},
+	},
 }));
 
-export default function PrimarySearchAppBar() {
-  const classes = useStyles();
+export default function ChannelSelect() {
+	const classes = useStyles();
 
-  const [val, setVal] = useState(0);
+	const [channelList, setChannelList] = useState();
 
-  const handleChange = (event) => {
-    setVal(event.target.value);
-  };
+	function localGetRequest() {
+		let requestUrl = "http://localhost:5000/Channel";
+		fetch(requestUrl)
+			.then((res) => res.json())
+			.then((res) => setChannelList(res));
+	}
 
-  return (
-    <FormControl>
-      <Select
-        className={classes.title}
-        disableUnderline
-        onChange={handleChange}
-        value={val}
-      >
-        <MenuItem value={0}>Шухляда</MenuItem>
-        <MenuItem value={1}>Sketch</MenuItem>
-      </Select>
-    </FormControl>
-  );
+	useEffect(() => {
+		/*let channels;
+
+		channels = GetChannels();
+		alert(channels);
+		setChannelList(channels);*/
+
+		if (!channelList) localGetRequest();
+	});
+
+	function handleClick() {}
+
+	return (
+		<FormControl>
+			<Select className={classes.title} title="Channels List" disableUnderline>
+				<p>Channels List</p>
+				{!channelList || channelList.length <= 0 ? (
+					<div>
+						<MenuItem value={0}>There is no channels</MenuItem>
+						<Divider></Divider>
+					</div>
+				) : (
+					(console.log(channelList),
+					channelList.map((channel) => (
+						<MenuItem value={channel.id} onClick={handleClick}>
+							{channel.id}
+						</MenuItem>
+					)))
+				)}
+			</Select>
+		</FormControl>
+	);
 }

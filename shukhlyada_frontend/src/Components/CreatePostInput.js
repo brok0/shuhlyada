@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
-
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import ImageIcon from "@material-ui/icons/Image";
@@ -18,8 +17,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { CreatePost } from "../services/PostsServices";
-
+import { PostRequest, SetHeader } from "../services/HttpRequests";
+import Divider from "@material-ui/core/Divider";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		margin: "10px",
@@ -76,7 +75,33 @@ export default function CreatePostInput() {
 
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [channel, setChannel] = useState(0);
+	const [channel, setChannel] = useState("");
+	const [channelList, setChannelList] = useState();
+
+	function GetChannels() {
+		let requestUrl = "http://localhost:5000/Channel";
+		fetch(requestUrl)
+			.then((res) => res.json())
+			.then((res) => setChannelList(res));
+	}
+
+	useEffect(() => {
+		if (!channelList) GetChannels();
+	});
+
+	function CreatePost() {
+		let url = "http://localhost:5000/Channel/post";
+		let body = {
+			channelId: channel,
+			title: title,
+			content: content,
+		};
+		if (localStorage.getItem("authData") === undefined) {
+			alert("Please log in");
+		} else {
+			PostRequest(url, body);
+		}
+	}
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -89,7 +114,7 @@ export default function CreatePostInput() {
 
 	const handleSubmit = () => {
 		console.log("creating post with title" + `${title}`);
-		CreatePost(channel, title, content);
+		CreatePost();
 	};
 
 	const modalStyle = {
@@ -103,8 +128,8 @@ export default function CreatePostInput() {
 			<h2 id="simple-modal-title">Upload Post</h2>
 			<TextField
 				id="standard-full-width"
-				placeholder="Post Title*"
-				helperText=""
+				placeholder="Post Title *"
+				helperText="max size 50"
 				fullWidth
 				margin="normal"
 				InputLabelProps={{
@@ -120,13 +145,22 @@ export default function CreatePostInput() {
 				<Select
 					labelId="channel-select"
 					id="channel-select"
+					value={channel}
 					onChange={(e) => {
 						setChannel(e.target.value);
+						console.log(channel);
 					}}
 				>
-					<MenuItem value={"dwad"}>dwad</MenuItem>
-					<MenuItem value={"mavpa"}>mavpa</MenuItem>
-					<MenuItem value={"sgyjkhjnjn,"}>sgyjkhjnjn,</MenuItem>
+					{!channelList || channelList.length <= 0 ? (
+						<div>
+							<MenuItem value={0}>There is no channels</MenuItem>
+							<Divider></Divider>
+						</div>
+					) : (
+						channelList.map((channel) => (
+							<MenuItem value={channel.id}>{channel.id}</MenuItem>
+						))
+					)}
 				</Select>
 				<FormHelperText>Note: You can only post in channels</FormHelperText>
 			</FormControl>

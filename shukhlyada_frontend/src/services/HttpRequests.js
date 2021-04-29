@@ -5,6 +5,11 @@ let Headers = {
 export function PostRequest(url, body) {
 	/// this request using http and is not secure. For https to work there is need to configure sertificate.
 	let result;
+	let userData = localStorage.getItem("authData");
+	if (userData !== null) {
+		Headers["Authorization"] = userData;
+	}
+
 	fetch(url, {
 		method: "POST",
 		headers: Headers,
@@ -30,17 +35,19 @@ export function PostRequest(url, body) {
 export function GetRequest(url) {
 	/// this request using http and is not secure. For https to work there is need to configure sertificate.
 	let result;
-	fetch(url, {
-		method: "GET",
-		headers: Headers,
-	})
+	fetch(url)
 		.then((res) => {
 			res.json();
 			if (!res.ok) {
 				throw "bad request";
 			}
+			return res;
 		})
-		.then((res) => (result = res))
+		.then((res) => {
+			result = res;
+			return res;
+		})
+		.then((result) => console.log(result))
 		.catch((err) => {
 			console.log(err);
 			result = "Error while proccessing this request";

@@ -64,7 +64,7 @@ namespace Shukhlyada.Api.Controllers
         public async Task<ActionResult> GetAllChannels()
         {
             var channels = await _channelService.GetAllChannelsAsync();
-            var channelsDTOs = _mapper.Map<List<Channel>>(channels);
+            var channelsDTOs = _mapper.Map<List<ReadChannelWithoutPostsDTO>>(channels);
             return Ok(channelsDTOs);
         }
 
@@ -104,12 +104,12 @@ namespace Shukhlyada.Api.Controllers
         /// </summary>
       
         [Authorize]
-        [HttpPost("post/")]
+        [HttpPost("post")]
         public async Task<IActionResult> CreatePostAsync(CreatePostDTO PostDTO)
         {
            
             var post = _mapper.Map<Post>(PostDTO);
-            var createdPost = await _channelService.CreatePostAsync(post,UserId);
+            var createdPost = await _channelService.CreatePostAsync(post,UserId); // user id не працює,кидає нул ексепшн. Треба тянути айді з хедера або кидати імя користувача в запит. тоді буде працювати цей метод
             var readPostDTO = _mapper.Map<ReadPostDTO>(createdPost);
             return CreatedAtAction(nameof(GetPostAsync), new { id = readPostDTO.Id }, readPostDTO);
 

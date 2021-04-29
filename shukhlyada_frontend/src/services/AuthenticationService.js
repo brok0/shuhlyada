@@ -16,15 +16,15 @@ export function Login(mail, password, isRemembered) {
 	User = result;
 
 	let authDataString = `${mail}:${password}`;
-	let authDataBytes = new TextEncoder().encode(authDataString);
-	let base64authData = btoa(authDataBytes);
+	let base64authData = btoa(authDataString);
 	let authDataWithType = `Basic ${base64authData}`;
 
 	if (isRemembered) {
 		localStorage.setItem("authData", authDataWithType);
 	}
 
-	SetHeader("Authorization", authDataWithType);
+	SetHeader("Authorization :", authDataWithType);
+	setTimeout('location.href = "/profile";', 1000);
 	return result;
 }
 
