@@ -8,6 +8,7 @@ import ProfilePage from "./Pages/ProfilePage";
 import ForgotPassword from "./Pages/Authentication/ForgotPassword";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
 import PostCommentPage from "./Pages/PostCommentPage";
+import ChannelPage from "./Pages/ChannelPage";
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
@@ -19,6 +20,7 @@ const Routes = {
 	FORGOT: "/forgotpassword",
 	RESET: "/resetpassword",
 	POST: "/post",
+	CHANNEL: "/channel",
 };
 function App() {
 	return (
@@ -56,6 +58,10 @@ function App() {
 					<Route
 						path={Routes.POST}
 						render={() => <PostCommentPage></PostCommentPage>}
+					></Route>
+					<Route
+						path={Routes.CHANNEL + "/:channel"}
+						render={() => <ChannelPage></ChannelPage>}
 					></Route>
 				</Switch>
 			</BrowserRouter>

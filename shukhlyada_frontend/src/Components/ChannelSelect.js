@@ -5,7 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import { GetChannels } from "../services/ChannelServices";
 import { Divider } from "@material-ui/core";
-
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
 	title: {
 		flexGrow: 50, // ця залупа відповідає за сторону розміщення пошукового поля(Якщо щось піде не так то видалити її нахуй)
@@ -30,12 +30,6 @@ export default function ChannelSelect() {
 	}
 
 	useEffect(() => {
-		/*let channels;
-
-		channels = GetChannels();
-		alert(channels);
-		setChannelList(channels);*/
-
 		if (!channelList) localGetRequest();
 	});
 
@@ -54,7 +48,7 @@ export default function ChannelSelect() {
 					(console.log(channelList),
 					channelList.map((channel) => (
 						<MenuItem value={channel.id} onClick={handleClick}>
-							{channel.id}
+							<Link to={`/channel/${channel.id}`}>{channel.id}</Link>
 						</MenuItem>
 					)))
 				)}
