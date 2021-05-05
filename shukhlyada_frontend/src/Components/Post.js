@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -50,68 +50,96 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post(props) {
 	const classes = useStyles();
-	var post = props.content;
-	var subheader = `by ${post.accountId} `;
-	console.log(post);
-	return (
-		<Card className={classes.root}>
-			<Grid
-				container
-				direction="column"
-				justify="flex-start"
-				alignItems="stretch"
-			>
-				<CardHeader
-					avatar={
-						<Avatar aria-label="channelPic" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<ReportDialog></ReportDialog>}
-					title={post.title}
-					subheader={subheader}
-				/>
+
+	const [liked, setLiked] = useState(false);
+
+	function LikePost() {
+		let url = `http://localhost:5000/Channel/post/like/${props.content.id}`;
+
+		fetch(url, {
+			method: "PUT",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		})
+			.then((res) => {
+				res.json();
+				if (!res.ok) {
+					throw "bad request";
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		setLiked(!liked);
+	}
+
+	if (props.content) {
+		var post = props.content;
+		var subheader = `by ${post.accountId} `;
+		console.log(post);
+		return (
+			<Card className={classes.root}>
 				<Grid
 					container
-					direction="row"
+					direction="column"
 					justify="flex-start"
 					alignItems="stretch"
 				>
+					<CardHeader
+						avatar={
+							<Avatar aria-label="channelPic" className={classes.avatar}>
+								R
+							</Avatar>
+						}
+						action={<ReportDialog></ReportDialog>}
+						title={post.title}
+						subheader={subheader}
+					/>
 					<Grid
-						direction="column"
-						justify="flex-end"
-						alignItems="center"
-						className={classes.icons}
-						item
-						xs={1}
+						container
+						direction="row"
+						justify="flex-start"
+						alignItems="stretch"
 					>
-						<Tooltip title="Share" placement="left">
-							<IconButton>
-								<ShareIcon></ShareIcon>
-							</IconButton>
-						</Tooltip>
-						<Tooltip title="Comments" placement="left">
-							<IconButton>
-								<QuestionAnswerIcon></QuestionAnswerIcon>
-							</IconButton>
-						</Tooltip>
-						<Tooltip title="Like" placement="left">
-							<IconButton>
-								<FavoriteBorderIcon></FavoriteBorderIcon>
-							</IconButton>
-						</Tooltip>
-					</Grid>
-					<Grid item xs={10}>
-						<CardContent className={classes.media}>
-							{" "}
-							<ReactMarkdown
-								children={post.content}
-								className={classes.image}
-							></ReactMarkdown>
-						</CardContent>
+						<Grid
+							direction="column"
+							justify="flex-end"
+							alignItems="center"
+							className={classes.icons}
+							item
+							xs={1}
+						>
+							<Tooltip title="Share" placement="left">
+								<IconButton>
+									<ShareIcon></ShareIcon>
+								</IconButton>
+							</Tooltip>
+							<Tooltip title="Comments" placement="left">
+								<IconButton>
+									<QuestionAnswerIcon></QuestionAnswerIcon>
+								</IconButton>
+							</Tooltip>
+							<Tooltip title="Like" placement="left">
+								<IconButton onClick={LikePost}>
+									<FavoriteBorderIcon
+										color={!liked ? "" : "error"}
+									></FavoriteBorderIcon>
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						<Grid item xs={10}>
+							<CardContent className={classes.media}>
+								{" "}
+								<ReactMarkdown
+									children={post.content}
+									className={classes.image}
+								></ReactMarkdown>
+							</CardContent>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
-		</Card>
-	);
+			</Card>
+		);
+	} else {
+		return <h2>Loading post...</h2>;
+	}
 }

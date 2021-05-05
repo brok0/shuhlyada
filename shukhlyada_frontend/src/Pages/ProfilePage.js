@@ -9,18 +9,25 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import TextField from '@material-ui/core/TextField';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import TextField from "@material-ui/core/TextField";
 import { User } from "../services/AuthenticationService";
-import {PostRequest} from "../services/HttpRequests";
+import { PostRequest } from "../services/HttpRequests";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
+
+import FolderIcon from "@material-ui/icons/Folder";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
@@ -58,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 	margin: {
 		marginTop: "50px",
 		marginLeft: "15%",
-		width: "340px"
+		width: "340px",
 	},
 	root: {
 		display: "flex",
@@ -67,21 +74,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 	dialogTitle: {
 		marginBottom: "-15px",
-		marginLeft: "40px"
+		marginLeft: "40px",
 	},
 	textField: {
-		margin: "15px"
-	}
-
+		margin: "15px",
+	},
 }));
-
-
 
 export default function ProfilePage() {
 	const classes = useStyles();
 	const [value, setValue] = useState(0);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
+	const [subscribedChannelList, setChannelList] = useState();
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -106,7 +111,19 @@ export default function ProfilePage() {
 			PostRequest(url, body);
 		}
 	}
+	function GetPostCreatedByUser() {
+		let url = ""; // no endpoint for it rn
+	}
 
+	function GetSubscribedChannels() {
+		let url = "http://localhost:5000/Account/subscription";
+		fetch(url, {
+			method: "GET",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		})
+			.then((res) => res.json())
+			.then((res) => setChannelList(res));
+	}
 	const handleSubmit = () => {
 		console.log("creating channel with name" + `${name}` + `${description}`);
 		CreateChannel();
@@ -117,6 +134,11 @@ export default function ProfilePage() {
 		localStorage.removeItem("authData");
 		setTimeout('location.href = "/login";', 1500);
 	}
+
+	useEffect(() => {
+		if (!subscribedChannelList) GetSubscribedChannels();
+		console.log(subscribedChannelList);
+	});
 	return (
 		<div>
 			<Grid container direction="row" justify="center" alignItems="flex-start">
@@ -128,9 +150,16 @@ export default function ProfilePage() {
 						indicatorColor="primary"
 						textColor="primary"
 					>
-						<Tab icon={<InboxIcon />} aria-label="userpost" />
-						<Tab icon={<FavoriteIcon />} aria-label="favoritepost" />
-					</Tabs>
+						<Tab icon={<InboxIcon />} aria-label="userpost">
+							<Post></Post>
+							<Divider variant="middle" className={classes.divider} />
+							<Post></Post>
+						</Tab>
+						<Tab icon={<FavoriteIcon />} aria-label="favoritepost">
+							<Post></Post>
+						</Tab>
+					</Tabs>{" "}
+					{/*here will be only post created by user TODO: add liked post and fix tab,currently they are nor working */}
 					<Post></Post>
 					<Divider variant="middle" className={classes.divider} />
 					<Post></Post>
@@ -182,11 +211,16 @@ export default function ProfilePage() {
 								>
 									Logout
 								</Button>
-
 							</Grid>
 						</Grid>
 					</Card>
-					<Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleClickOpen}>
+					<Button
+						variant="contained"
+						size="large"
+						color="primary"
+						className={classes.margin}
+						onClick={handleClickOpen}
+					>
 						Create channel
 					</Button>
 					<Dialog
@@ -197,16 +231,31 @@ export default function ProfilePage() {
 						aria-labelledby="alert-dialog-slide-title"
 						aria-describedby="alert-dialog-slide-description"
 					>
-
-						<DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">{"Create channel"}</DialogTitle>
-						<DialogContent >
+						<DialogTitle
+							className={classes.dialogTitle}
+							id="alert-dialog-slide-title"
+						>
+							{"Create channel"}
+						</DialogTitle>
+						<DialogContent>
 							<div className={classes.root} noValidate autoComplete="off">
-								<TextField className={classes.textField} id="standard-basic" label="Name" onChange={(e) => {
-									setName(e.target.value);
-								}} />
-								<TextField className={classes.textField} id="standard-basic" label="Description " multiline onChange={(e) => {
-									setDescription(e.target.value);
-								}}/>
+								<TextField
+									className={classes.textField}
+									id="standard-basic"
+									label="Name"
+									onChange={(e) => {
+										setName(e.target.value);
+									}}
+								/>
+								<TextField
+									className={classes.textField}
+									id="standard-basic"
+									label="Description "
+									multiline
+									onChange={(e) => {
+										setDescription(e.target.value);
+									}}
+								/>
 							</div>
 						</DialogContent>
 						<DialogActions>
@@ -218,6 +267,29 @@ export default function ProfilePage() {
 							</Button>
 						</DialogActions>
 					</Dialog>
+					<Grid item>
+						<Typography variant="h6" className={classes.title}>
+							Channels you subscribed to
+						</Typography>
+						<div className={classes.demo}>
+							<List>
+								{!subscribedChannelList || subscribedChannelList.length <= 0 ? (
+									<h2>You are not susbcribed to any channel</h2>
+								) : (
+									subscribedChannelList.map((channel) => (
+										<ListItem>
+											<ListItemText primary={channel.id} />
+											<ListItemSecondaryAction>
+												<IconButton edge="end" aria-label="unsubscribe">
+													<DeleteIcon />
+												</IconButton>
+											</ListItemSecondaryAction>
+										</ListItem>
+									))
+								)}
+							</List>
+						</div>
+					</Grid>
 				</Grid>
 			</Grid>
 		</div>
