@@ -13,8 +13,8 @@ import ReactMarkdown from "react-markdown";
 import Grid from "@material-ui/core/Grid";
 import ReportDialog from "./ReportDialog";
 import { Tooltip } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-//zminna.innerHTML = result;
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -90,7 +90,7 @@ export default function Post(props) {
 								R
 							</Avatar>
 						}
-						action={<ReportDialog></ReportDialog>}
+						action={<ReportDialog postId={post.id}></ReportDialog>}
 						title={post.title}
 						subheader={subheader}
 					/>
@@ -140,6 +140,10 @@ export default function Post(props) {
 			</Card>
 		);
 	} else {
-		return <h2>Loading post...</h2>;
+		return (
+			<h2>
+				Loading post...<CircularProgress></CircularProgress>
+			</h2>
+		);
 	}
 }

@@ -17,18 +17,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
-import { User } from "../services/AuthenticationService";
 import { PostRequest } from "../services/HttpRequests";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
-
-import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -56,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
 	divider: {
 		margin: "10px",
 	},
-	avatar: {
-		marginTop: "10px",
+	marginBottom: {
+		marginBottom: "10px",
 	},
 	usernameGrid: {
 		marginLeft: "10px",
@@ -87,6 +83,7 @@ export default function ProfilePage() {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [subscribedChannelList, setChannelList] = useState();
+	const [createdPosts, setCreatedPosts] = useState();
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -111,9 +108,6 @@ export default function ProfilePage() {
 			PostRequest(url, body);
 		}
 	}
-	function GetPostCreatedByUser() {
-		let url = ""; // no endpoint for it rn
-	}
 
 	function GetSubscribedChannels() {
 		let url = "http://localhost:5000/Account/subscription";
@@ -123,6 +117,16 @@ export default function ProfilePage() {
 		})
 			.then((res) => res.json())
 			.then((res) => setChannelList(res));
+	}
+
+	function GetCreatedPosts() {
+		let url = "http://localhost:5000/Account/posts";
+		fetch(url, {
+			method: "GET",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		})
+			.then((res) => res.json())
+			.then((res) => setCreatedPosts(res));
 	}
 	const handleSubmit = () => {
 		console.log("creating channel with name" + `${name}` + `${description}`);
@@ -137,6 +141,7 @@ export default function ProfilePage() {
 
 	useEffect(() => {
 		if (!subscribedChannelList) GetSubscribedChannels();
+		if (!createdPosts) GetCreatedPosts();
 		console.log(subscribedChannelList);
 	});
 	return (
@@ -149,21 +154,24 @@ export default function ProfilePage() {
 						variant="fullWidth"
 						indicatorColor="primary"
 						textColor="primary"
+						className={classes.marginBottom}
 					>
-						<Tab icon={<InboxIcon />} aria-label="userpost">
-							<Post></Post>
-							<Divider variant="middle" className={classes.divider} />
-							<Post></Post>
-						</Tab>
-						<Tab icon={<FavoriteIcon />} aria-label="favoritepost">
-							<Post></Post>
-						</Tab>
+						<Tab icon={<InboxIcon />} aria-label="userpost"></Tab>
+						<Tab icon={<FavoriteIcon />} aria-label="favoritepost"></Tab>
 					</Tabs>{" "}
-					{/*here will be only post created by user TODO: add liked post and fix tab,currently they are nor working */}
-					<Post></Post>
-					<Divider variant="middle" className={classes.divider} />
-					<Post></Post>
+					{/*here will be only post created by user. TODO: add liked post and fix tab,currently they are not working */}
+					{!createdPosts || createdPosts <= 0 ? (
+						<CircularProgress></CircularProgress>
+					) : (
+						createdPosts.map((post) => (
+							<div>
+								<Post content={post}></Post>
+								<Divider className={classes.divider}></Divider>
+							</div>
+						))
+					)}
 				</Grid>
+
 				<Grid className={classes.profileGrid} item xs={2} sm={3}>
 					<Card variant="outlined">
 						<Grid

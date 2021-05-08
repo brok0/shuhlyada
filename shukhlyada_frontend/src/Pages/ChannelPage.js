@@ -5,6 +5,9 @@ import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import { GetRequest } from "../services/HttpRequests";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 const useStyles = makeStyles((theme) => ({
 	contentBackground: {
 		marginTop: "5px",
@@ -53,6 +56,9 @@ export default function ChannelPage() {
 					<h2> Channel : {channelData.id}</h2>
 					<h3>Description : {channelData.description}</h3>
 
+					<Link to={`/reports/${channel}`}>
+						<p>Reports for this channel</p>
+					</Link>
 					<CreatePostInput></CreatePostInput>
 
 					{!channelData || channelData <= 0 ? (
@@ -69,6 +75,6 @@ export default function ChannelPage() {
 			</div>
 		);
 	} else {
-		return <h2>Cant fetch</h2>;
+		return <CircularProgress></CircularProgress>;
 	}
 }

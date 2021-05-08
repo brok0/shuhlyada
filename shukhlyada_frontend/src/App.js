@@ -9,6 +9,7 @@ import ForgotPassword from "./Pages/Authentication/ForgotPassword";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
 import PostCommentPage from "./Pages/PostCommentPage";
 import ChannelPage from "./Pages/ChannelPage";
+import ReportsPage from "./Pages/ReportsPage";
 const Routes = {
 	MAIN: "/",
 	LOGIN: "/login",
@@ -21,6 +22,7 @@ const Routes = {
 	RESET: "/resetpassword",
 	POST: "/post",
 	CHANNEL: "/channel",
+	REPORTS: "/reports",
 };
 function App() {
 	return (
@@ -62,6 +64,10 @@ function App() {
 					<Route
 						path={Routes.CHANNEL + "/:channel"}
 						render={() => <ChannelPage></ChannelPage>}
+					></Route>
+					<Route
+						path={Routes.REPORTS + "/:channel"}
+						render={() => <ReportsPage></ReportsPage>}
 					></Route>
 				</Switch>
 			</BrowserRouter>
