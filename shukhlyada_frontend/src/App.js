@@ -58,7 +58,7 @@ function App() {
 						render={() => <ResetPassword></ResetPassword>}
 					></Route>
 					<Route
-						path={Routes.POST}
+						path={Routes.POST + "/:postId"}
 						render={() => <PostCommentPage></PostCommentPage>}
 					></Route>
 					<Route

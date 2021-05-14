@@ -35,9 +35,9 @@ export default function ErrorPage(props) {
 			</h4>
 			<h4>Деталі:{props.errorDetails}</h4>
 
-			<a className={classes.linkToHome} to="/home">
+			<Link className={classes.linkToHome} to="/">
 				Повернутись на головну
-			</a>
+			</Link>
 		</div>
 	);
 }

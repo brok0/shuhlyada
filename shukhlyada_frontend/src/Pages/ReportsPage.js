@@ -24,7 +24,7 @@ export default function ReportsPage() {
 			<div>
 				<h3>Report List for channel : {channel}</h3>
 				{!report || report.length <= 0 ? (
-					<p>No reports</p>
+					<CircularProgress></CircularProgress>
 				) : (
 					report.map((rep) => (
 						<div>
@@ -38,6 +38,6 @@ export default function ReportsPage() {
 			</div>
 		);
 	} else {
-		return <CircularProgress></CircularProgress>;
+		return <p>No reports</p>;
 	}
 }

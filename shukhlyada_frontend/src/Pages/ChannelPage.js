@@ -7,6 +7,7 @@ import { GetRequest } from "../services/HttpRequests";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	contentBackground: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: 15,
 		margin: "auto",
 	},
+	marginLeft: {
+		marginLeft: "10px",
+	},
 }));
 
 export default function ChannelPage() {
@@ -45,6 +49,21 @@ export default function ChannelPage() {
 			});
 	}
 
+	function SubscribeToChannel() {
+		let requestUrl = `http://localhost:5000/Channel/${channel}`;
+
+		fetch(requestUrl, {
+			method: "PUT",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		}).then((res) => {
+			res.json();
+			if (!res.ok) {
+				alert("bad request");
+			}
+			return res;
+		});
+	}
+
 	useEffect(() => {
 		if (!channelData || channelData.id !== channel) getChannelWithPosts();
 	});
@@ -53,14 +72,23 @@ export default function ChannelPage() {
 		return (
 			<div id="wrapper">
 				<div className={classes.contentBackground}>
-					<h2> Channel : {channelData.id}</h2>
+					<h2>
+						{" "}
+						Channel : <i>{channelData.id}</i> has :{" "}
+						<strong>{channelData.subscribers}</strong> subscribers!
+						<Button
+							variant="contained"
+							className={classes.marginLeft}
+							onClick={SubscribeToChannel}
+						>
+							Subscribe
+						</Button>
+					</h2>{" "}
 					<h3>Description : {channelData.description}</h3>
-
 					<Link to={`/reports/${channel}`}>
 						<p>Reports for this channel</p>
 					</Link>
 					<CreatePostInput></CreatePostInput>
-
 					{!channelData || channelData <= 0 ? (
 						<h2>No Posts</h2>
 					) : (

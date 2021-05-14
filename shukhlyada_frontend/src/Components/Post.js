@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import ReportDialog from "./ReportDialog";
 import { Tooltip } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -115,7 +115,9 @@ export default function Post(props) {
 							</Tooltip>
 							<Tooltip title="Comments" placement="left">
 								<IconButton>
-									<QuestionAnswerIcon></QuestionAnswerIcon>
+									<Link to={`/post/${post.id}`}>
+										<QuestionAnswerIcon></QuestionAnswerIcon>
+									</Link>
 								</IconButton>
 							</Tooltip>
 							<Tooltip title="Like" placement="left">
@@ -123,6 +125,7 @@ export default function Post(props) {
 									<FavoriteBorderIcon
 										color={!liked ? "" : "error"}
 									></FavoriteBorderIcon>
+									<h5>{post.likes}</h5>
 								</IconButton>
 							</Tooltip>
 						</Grid>

@@ -22,7 +22,7 @@ export default function ChannelSelect() {
 
 	const [channelList, setChannelList] = useState();
 
-	function localGetRequest() {
+	function GetChannels() {
 		let requestUrl = "http://localhost:5000/Channel";
 		fetch(requestUrl)
 			.then((res) => res.json())
@@ -30,7 +30,7 @@ export default function ChannelSelect() {
 	}
 
 	useEffect(() => {
-		if (!channelList) localGetRequest();
+		if (!channelList) GetChannels();
 	});
 
 	function handleClick() {}

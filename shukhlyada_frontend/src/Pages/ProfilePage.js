@@ -25,6 +25,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Carousel } from "react-bootstrap";
+import AvatarCarousel from "../Components/AvatarCarousel";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -91,7 +94,20 @@ export default function ProfilePage() {
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
+	function unSubscribe() {
+		let requestUrl = ""; //`http://localhost:5000/Channel/${channel}`;
 
+		fetch(requestUrl, {
+			method: "PUT",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		}).then((res) => {
+			res.json();
+			if (!res.ok) {
+				alert("bad request");
+			}
+			return res;
+		});
+	}
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -197,7 +213,16 @@ export default function ProfilePage() {
 								<Typography variant="h6" gutterBottom>
 									email
 								</Typography>
-								<Button color="primary">Edit</Button>
+								<Grid item direction="row" alignItems="flex-end">
+									<Button color="primary">Edit</Button>
+									<Button
+										className={classes.button}
+										color="secondary"
+										onClick={Logout}
+									>
+										Logout
+									</Button>
+								</Grid>
 							</Grid>
 
 							<Grid
@@ -207,18 +232,7 @@ export default function ProfilePage() {
 								container
 								xs
 							>
-								<Avatar
-									className={classes.avatar}
-									image={"AccountCircleIcon"}
-								/>
-
-								<Button
-									className={classes.button}
-									color="secondary"
-									onClick={Logout}
-								>
-									Logout
-								</Button>
+								<AvatarCarousel></AvatarCarousel>
 							</Grid>
 						</Grid>
 					</Card>
@@ -289,7 +303,9 @@ export default function ProfilePage() {
 											<ListItemText primary={channel.id} />
 											<ListItemSecondaryAction>
 												<IconButton edge="end" aria-label="unsubscribe">
-													<DeleteIcon />
+													<DeleteIcon
+													//onClick={unSubscribe}
+													/>
 												</IconButton>
 											</ListItemSecondaryAction>
 										</ListItem>

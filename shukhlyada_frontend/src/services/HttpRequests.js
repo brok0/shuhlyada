@@ -33,7 +33,7 @@ export function PostRequest(url, body) {
 }
 
 export function GetRequest(url) {
-	/// this request using http and is not secure. For https to work there is need to configure sertificate.
+	/// this request using http and is not secure. For https to work there is need to configure certificate.
 	let result;
 	fetch(url)
 		.then((res) => {
