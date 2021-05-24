@@ -62,6 +62,7 @@ export default function ChannelPage() {
 			}
 			return res;
 		});
+		getChannelWithPosts();
 	}
 
 	useEffect(() => {

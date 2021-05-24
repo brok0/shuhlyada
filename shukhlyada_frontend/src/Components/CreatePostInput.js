@@ -100,6 +100,7 @@ export default function CreatePostInput() {
 			alert("Please log in");
 		} else {
 			PostRequest(url, body);
+			setOpen(false);
 		}
 	}
 

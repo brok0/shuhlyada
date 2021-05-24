@@ -6,7 +6,7 @@ export default function ReportsPage() {
 	const [report, setReport] = useState();
 	let { channel } = useParams();
 	function GetReports() {
-		let url = `http://localhost:5000/Channel/reports/posts/?channelId=${channel}`;
+		let url = `http://localhost:5000/Channel/reports/posts/${channel}`;
 		fetch(url, {
 			method: "GET",
 			headers: { Authorization: `${localStorage.getItem("authData")}` },

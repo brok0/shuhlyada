@@ -16,12 +16,21 @@ export default function AvatarCarousel() {
 	const handleChange = () => {
 		if (imgId >= 4) {
 			// there is 5 avatar rn this number might change
-			setImgId(1);
+			setImgId(0);
 		} else {
 			setImgId(imgId + 1);
 			console.log(imgId);
 		}
 	};
+	function ChangeAvatar() {
+		let url = "";
+
+		fetch(url, {
+			method: "PUT",
+			headers: { Authorization: `${localStorage.getItem("authData")}` },
+		}).then((res) => res.json());
+	}
+
 	return (
 		<div>
 			<Carousel indicators={false} interval={null} onSlide={handleChange}>

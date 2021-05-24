@@ -15,6 +15,7 @@ import ReportDialog from "./ReportDialog";
 import { Tooltip } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
+import Icon from "@material-ui/core/Icon";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -26,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: 10,
 		marginBottom: 10,
 		maxHeight: "100%",
-		maxWidth: "90%",
-		backgroundColor: "gray",
+		maxWidth: "100%",
+		border: "1px solid black",
 		alignItems: "stretch",
 		"& img": {
 			maxWidth: "100%",
@@ -43,8 +44,11 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "flex-end",
-		marginLeft: "10px",
+		marginLeft: "20px",
 		marginBottom: "30px",
+	},
+	noDecoration: {
+		color: "gray",
 	},
 }));
 
@@ -74,7 +78,7 @@ export default function Post(props) {
 
 	if (props.content) {
 		var post = props.content;
-		var subheader = `by ${post.accountId} `;
+		var subheader = `by ${post.accountName} `;
 		console.log(post);
 		return (
 			<Card className={classes.root}>
@@ -115,16 +119,20 @@ export default function Post(props) {
 							</Tooltip>
 							<Tooltip title="Comments" placement="left">
 								<IconButton>
-									<Link to={`/post/${post.id}`}>
+									<Link
+										to={`/post/${post.id}`}
+										className={classes.noDecoration}
+									>
 										<QuestionAnswerIcon></QuestionAnswerIcon>
 									</Link>
 								</IconButton>
 							</Tooltip>
 							<Tooltip title="Like" placement="left">
 								<IconButton onClick={LikePost}>
-									<FavoriteBorderIcon
-										color={!liked ? "" : "error"}
-									></FavoriteBorderIcon>
+									<Icon color={!liked ? "" : "error"}>
+										{!liked ? "favorite_border" : "favorite"}
+									</Icon>
+
 									<h5>{post.likes}</h5>
 								</IconButton>
 							</Tooltip>

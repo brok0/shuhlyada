@@ -79,7 +79,31 @@ const useStyles = makeStyles((theme) => ({
 		margin: "15px",
 	},
 }));
-
+function TabPanel(props) {
+	const { children, value, index, ...other } = props;
+	const classes = useStyles();
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
+		>
+			{value === index &&
+				(!props.posts || props.posts <= 0 ? (
+					<CircularProgress></CircularProgress>
+				) : (
+					props.posts.map((post) => (
+						<div>
+							<Post content={post}></Post>
+							<Divider className={classes.divider}></Divider>
+						</div>
+					))
+				))}
+		</div>
+	);
+}
 export default function ProfilePage() {
 	const classes = useStyles();
 	const [value, setValue] = useState(0);
@@ -87,8 +111,16 @@ export default function ProfilePage() {
 	const [description, setDescription] = useState("");
 	const [subscribedChannelList, setChannelList] = useState();
 	const [createdPosts, setCreatedPosts] = useState();
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
+	const [likedPosts, setLikedPosts] = useState();
+
+	let Headers = {
+		Authorization: `${localStorage.getItem("authData")}`,
+	};
+	const handleChange = () => {
+		if (value === 0) setValue(1);
+		else setValue(0);
+		console.log("create posts", createdPosts);
+		console.log("liked posts", likedPosts);
 	};
 	const [open, setOpen] = React.useState(false);
 	const handleClickOpen = () => {
@@ -99,7 +131,7 @@ export default function ProfilePage() {
 
 		fetch(requestUrl, {
 			method: "PUT",
-			headers: { Authorization: `${localStorage.getItem("authData")}` },
+			headers: Headers,
 		}).then((res) => {
 			res.json();
 			if (!res.ok) {
@@ -108,6 +140,7 @@ export default function ProfilePage() {
 			return res;
 		});
 	}
+
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -129,20 +162,29 @@ export default function ProfilePage() {
 		let url = "http://localhost:5000/Account/subscription";
 		fetch(url, {
 			method: "GET",
-			headers: { Authorization: `${localStorage.getItem("authData")}` },
+			headers: Headers,
 		})
 			.then((res) => res.json())
 			.then((res) => setChannelList(res));
 	}
 
 	function GetCreatedPosts() {
-		let url = "http://localhost:5000/Account/posts";
+		let url = "http://localhost:5000/Account/posts/created";
 		fetch(url, {
 			method: "GET",
-			headers: { Authorization: `${localStorage.getItem("authData")}` },
+			headers: Headers,
 		})
 			.then((res) => res.json())
 			.then((res) => setCreatedPosts(res));
+	}
+	function GetLikedPosts() {
+		let url = "http://localhost:5000/Account/posts/liked";
+		fetch(url, {
+			method: "GET",
+			headers: Headers,
+		})
+			.then((res) => res.json())
+			.then((res) => setLikedPosts(res));
 	}
 	const handleSubmit = () => {
 		console.log("creating channel with name" + `${name}` + `${description}`);
@@ -158,7 +200,7 @@ export default function ProfilePage() {
 	useEffect(() => {
 		if (!subscribedChannelList) GetSubscribedChannels();
 		if (!createdPosts) GetCreatedPosts();
-		console.log(subscribedChannelList);
+		if (!likedPosts) GetLikedPosts();
 	});
 	return (
 		<div>
@@ -175,17 +217,9 @@ export default function ProfilePage() {
 						<Tab icon={<InboxIcon />} aria-label="userpost"></Tab>
 						<Tab icon={<FavoriteIcon />} aria-label="favoritepost"></Tab>
 					</Tabs>{" "}
+					<TabPanel value={value} index={0} posts={createdPosts}></TabPanel>
+					<TabPanel value={value} index={1} posts={likedPosts}></TabPanel>
 					{/*here will be only post created by user. TODO: add liked post and fix tab,currently they are not working */}
-					{!createdPosts || createdPosts <= 0 ? (
-						<CircularProgress></CircularProgress>
-					) : (
-						createdPosts.map((post) => (
-							<div>
-								<Post content={post}></Post>
-								<Divider className={classes.divider}></Divider>
-							</div>
-						))
-					)}
 				</Grid>
 
 				<Grid className={classes.profileGrid} item xs={2} sm={3}>
@@ -215,11 +249,7 @@ export default function ProfilePage() {
 								</Typography>
 								<Grid item direction="row" alignItems="flex-end">
 									<Button color="primary">Edit</Button>
-									<Button
-										className={classes.button}
-										color="secondary"
-										onClick={Logout}
-									>
+									<Button color="secondary" onClick={Logout}>
 										Logout
 									</Button>
 								</Grid>
