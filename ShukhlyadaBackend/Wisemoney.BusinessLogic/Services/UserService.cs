@@ -15,11 +15,13 @@ namespace Shukhlyada.BusinessLogic.Services
     public class UserService : IUserService
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IPostRepository _postRepository;
         private readonly IMailService _mailService;
 
-        public UserService(IAccountRepository accountRepository, IMailService mailService)
+        public UserService(IAccountRepository accountRepository, IMailService mailService, IPostRepository postRepository)
         {
             _accountRepository = accountRepository;
+            _postRepository = postRepository;
             _mailService = mailService;
         }
 
@@ -88,5 +90,45 @@ namespace Shukhlyada.BusinessLogic.Services
             return channels;
         }
 
+        public async Task<List<Post>> GetCreatedPostsAsync(Guid userId)
+        {
+            var spec = new UserCreatedPostsSpecification(userId);
+            var userWithPosts = await _accountRepository.GetSingleAsync(spec);
+
+            var posts = userWithPosts.CreatedPosts;
+            
+            if(posts == null)
+            { throw new PostNotFoundException(); }
+            
+            return posts.ToList();
+
+        }
+
+        public async Task ChangeAvatar(Guid userId,int imageId)
+        {
+            var user = await _accountRepository.GetByIdAsync(userId);
+
+            user.ProfilePictureId = imageId;
+
+            _accountRepository.Update(user);
+            await _accountRepository.UnitOfWork.SaveChangesAsync();
+
+        }
+
+        public async Task<List<Post>> GetLikedPostsAsync(Guid userId)
+        {
+            var user = await _accountRepository.GetByIdAsync(userId);
+            var spec = new UserLikedPostsSpecification(user);
+
+            var userWithPosts = await _postRepository.GetAsync(spec);
+
+            //var posts = userWithPosts.LikedPosts;
+
+            if(userWithPosts == null)
+            {
+                throw new PostNotFoundException();
+            }
+            return userWithPosts.ToList();
+        }
     }
 }

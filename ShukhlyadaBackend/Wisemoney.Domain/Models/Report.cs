@@ -9,7 +9,7 @@ namespace Shukhlyada.Domain.Models
     {
         public Guid Id { get; set; }
 
-        public Guid? PostId { get; set; }
+        public Guid? PostId { get; set; } // чого тут був тип "Guid?"
         public Post ReportedPost { get; set; }
 
         public string? ChannelId { get; set; }
@@ -18,11 +18,15 @@ namespace Shukhlyada.Domain.Models
         public string Reason { get; set; }
         public ReportType Type { get; set; }
 
+
+       
     }
 
     public enum ReportType
     {
         Racism,
+        Offensive,
+        Pornography,
         //...
     }
 }

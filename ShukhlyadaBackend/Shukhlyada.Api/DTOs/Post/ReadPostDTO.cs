@@ -10,7 +10,7 @@ namespace Shukhlyada.Api.DTOs.Post
     {
         public Guid Id { get; set; }
 
-        public Guid AccountId { get; set; }
+        public string AccountName { get; set; }
 
         public string ChannelId { get; set; }
 

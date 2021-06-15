@@ -5,6 +5,7 @@ using Shukhlyada.Api.DTOs;
 using Shukhlyada.Api.DTOs.Channel;
 using Shukhlyada.Api.DTOs.Comment;
 using Shukhlyada.Api.DTOs.Post;
+using Shukhlyada.Api.DTOs.Reports;
 using Shukhlyada.BusinessLogic.Abstractions;
 using Shukhlyada.Domain.Models;
 using System;
@@ -109,7 +110,7 @@ namespace Shukhlyada.Api.Controllers
         {
            
             var post = _mapper.Map<Post>(PostDTO);
-            var createdPost = await _channelService.CreatePostAsync(post,UserId); // user id не працює,кидає нул ексепшн. Треба тянути айді з хедера або кидати імя користувача в запит. тоді буде працювати цей метод
+            var createdPost = await _channelService.CreatePostAsync(post,UserId); 
             var readPostDTO = _mapper.Map<ReadPostDTO>(createdPost);
             return CreatedAtAction(nameof(GetPostAsync), new { id = readPostDTO.Id }, readPostDTO);
 
@@ -160,7 +161,7 @@ namespace Shukhlyada.Api.Controllers
         /// </summary>
       
         [Authorize]
-        [HttpPost("post/comment/")]
+        [HttpPut("post/comment/")]
         public async Task<IActionResult> CommentPostAsync (CommentCreateDTO comment)
         {
             var mapComment = _mapper.Map<Comment>(comment);
@@ -174,17 +175,55 @@ namespace Shukhlyada.Api.Controllers
         /// </summary>
        
         [AllowAnonymous]
-        [HttpGet("{channelName}/post")]
+        [HttpGet("posts/{channelName}")]
         public async Task<IActionResult> GetPostsForChannelAsync (string channelName)
         {
             var channel = await _channelService.GetChannelWithPostsAsync(channelName);
+
             var channelDTO = _mapper.Map<ReadChannelWithPostsDTO>(channel);
-            
+            //channelDTO = channelDTO.Posts.OrderBy(d => d.PublishedDate);
             return Ok(channelDTO);
 
         }
-        
+        /// <summary>
+        /// Create Post report.
+        /// </summary>
+        [Authorize]
+        [HttpPost("post/report")]
 
+        public async Task<IActionResult> CreateReportForPost(CreateReportDTO report)
+        {
+            var map = _mapper.Map<Report>(report);
+            var result = await _channelService.CreatePostReportAsync(map);
+
+            var mapResult = _mapper.Map<ReadReportDTO>(result);
+            return Ok(mapResult);
+        }
+        /// <summary>
+        /// Returns report for single post.
+        /// </summary>
+        [Authorize]
+        [HttpGet("post/reports/{PostId}")]
+        public async Task<IActionResult> GetReportsForPost(Guid PostId)
+        {
+            var result = await _channelService.GetReportsForPostAsync(PostId,UserId);
+            var mapResult = _mapper.Map<List<ReadReportDTO>>(result);
+            return Ok(mapResult);
+        }
+        /// <summary>
+        /// Returns all reports for posts in single channel.
+        /// </summary>
+        [Authorize]
+        [HttpGet("reports/posts/{channelId}")]
+
+        public async Task<IActionResult> GetReportsForPostsInChannel(string channelId)
+        {
+            var result = await _channelService.GetReportsForPostsInChannelAsync(channelId, UserId);
+
+            var mapResult = _mapper.Map<List<ReadReportDTO>>(result);
+            
+            return Ok(mapResult);
+        }
         private Guid UserId => Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }
