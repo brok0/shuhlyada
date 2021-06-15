@@ -10,7 +10,7 @@ namespace Shukhlyada.BusinessLogic.Specifications
     {
         public ChannelWithPostsSpecification(string channelName)
         {
-            Query.Where(c => c.Id == channelName).Include(c => c.Posts).ThenInclude(p => p.UsersLiked);
+            Query.Where(c => c.Id == channelName).Include(s=>s.Subscribers).Include(c => c.Posts).ThenInclude(p => p.UsersLiked);
         }
     }
 }

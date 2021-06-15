@@ -28,9 +28,11 @@ namespace Shukhlyada.BusinessLogic.Abstractions
 
         public Task SubscribeToChannelAsync(Guid UserId, string ChannelId);
 
-       
+        public  Task<List<Report>> GetReportsForChannelAsync(string ChannelId, Guid UserId);
 
-
+        public  Task<List<Report>> GetReportsForPostAsync(Guid PostId, Guid UserId);
+        public  Task<Report> CreatePostReportAsync(Report report);
+        public  Task<List<Report>> GetReportsForPostsInChannelAsync(string ChannelId, Guid UserId);
 
     }
 }

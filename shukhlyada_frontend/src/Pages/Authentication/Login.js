@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
+import { Login } from "../../services/AuthenticationService";
 
 function Copyright() {
 	return (
@@ -53,14 +54,22 @@ export default function LoginForm() {
 	const [password, setPassword] = useState("");
 	const [errors, setError] = useState("");
 	const [visible, setVisible] = useState(0);
+	const [isRemembered, setRemembered] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if ((password && password.length < 6) || password.length > 32) {
+		console.log(isRemembered);
+		if (
+			(password && password.length < 6) ||
+			(password && password.length > 32)
+		) {
 			setError("Password must be more than 6 characters and less than 32");
 			setVisible(100);
 		} else {
 			setVisible(0);
+			/// this request using http and is not secure. For https to work there is need to configure sertificate.
+
+			let result = Login(mail, password, isRemembered);
 		}
 	};
 
@@ -105,7 +114,16 @@ export default function LoginForm() {
 						}}
 					/>
 					<FormControlLabel
-						control={<Checkbox value="remember" color="primary" />}
+						control={
+							<Checkbox
+								checked={isRemembered}
+								onChange={() => {
+									setRemembered(!isRemembered);
+									console.log(isRemembered);
+								}}
+								color="primary"
+							/>
+						}
 						label="Remember me"
 					/>
 					<MuiAlert severity="error" style={{ opacity: `${visible}%` }}>

@@ -11,6 +11,7 @@ namespace Shukhlyada.Api.DTOs.Channel
         public string Id { get; set; }
         public string Description { get; set; }
         public DateTime DateOfCreation { get; set; }
+        public int Subscribers { get; set; }
 
         public ICollection<ReadPostDTO> Posts { get; set; }
     }
